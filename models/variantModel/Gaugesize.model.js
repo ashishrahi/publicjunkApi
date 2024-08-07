@@ -3,7 +3,7 @@ const {mongoose} = require('mongoose');
  const gaugesizeSchema = new mongoose.Schema({
   
     gaugesize:{
-    type:String,
+    type:Number,
    },
    status:{
     type:Boolean,

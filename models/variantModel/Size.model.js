@@ -3,7 +3,7 @@ const {mongoose} = require('mongoose');
  const sizeSchema = new mongoose.Schema({
   
    size:{
-    type:String,
+    type:Number,
    },
    status:{
     type:Boolean,

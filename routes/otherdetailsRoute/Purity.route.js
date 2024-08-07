@@ -1,23 +1,29 @@
 const express = require('express')
 const router = express.Router();
-const createError = require('../../utilitiesFunctions/error')
-const { createPurities,getPurities,} = require('../../controller/otherDetails/Purity.controller');
+const { createPurities,getPurities,getPurityStatus,updatePurity,getbyIdPurities} = require('../../controller/otherDetails/Purity.controller');
+const upload = require('../../middleware/multer.middleware')
 
+//Create a Purity
+router.post('/purity',upload.none(),createPurities);
 
-//Create a Parity
-router.post('/purity',createPurities);
+//Get a Purity
 
-//Get a Parity
-
-//Get all Parity
+//Get all Purity
 router.get('/',getPurities);
 
-//Update a Parity
+//Get Purity by id
 
-//update Parity status
+router.get('/:id', getbyIdPurities);
+
+//Get Purity status
+router.put('/:id/status',getPurityStatus);
+
+//Update a Purity
+router.put('/:id',updatePurity);
+//update Purity status
 
 
-//Delete a Parity
+//Delete a Purity
 
 
 module.exports = router;

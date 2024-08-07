@@ -8,9 +8,8 @@ const {mongoose} = require('mongoose');
    status:{
     type:Boolean,
     default:'true',
-   }
+   }},
    
-   },
     {timestamps:true})
 
 

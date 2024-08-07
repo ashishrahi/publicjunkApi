@@ -1,16 +1,10 @@
 const cloudinary = require('cloudinary').v2;
 
-const connectCloudinary = async()=>{
-    try{
-        await cloudinary.config({
-            cloud_name: process.env.CLOUDINARY_CLOUD_NAME ,
-            api_key: process.env.CLOUDINARY_API_KEY,
-            api_secret: process.env.CLOUDINARY_API_SECRET,
-        })
-        console.log('Connected to cloudinary successfully')
-    }catch(error){
-        console.error('Error connecting to cloudinary', error)
-    }
-}
+cloudinary.config({
+            cloud_name :'drylsvqmx' ,
+            api_key : '133366478973521',
+            api_secret :'8AbI_HEWPfWEiLejKpnlg-xgvGU',
+            });
+    
 
-module.exports = connectCloudinary
+module.exports = cloudinary;

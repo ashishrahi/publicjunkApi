@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto')
 
-//Register Admin
+//////////////// Register Admin //////////////////////////
 
 const registerAdmin = async(req,res)=>{
     const{username,email,password}=req.body;
@@ -26,13 +26,7 @@ const registerAdmin = async(req,res)=>{
     }
 
     //password validation
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordRegex.test(password)) {
-      return res.status(400).json({
-        message: 'Please enter a valid password'
-      });
-    }
-
+    
     //check if admin exists
     const existingAdmin = await Admin.findOne({email:email});
     if (existingAdmin) {
@@ -56,7 +50,8 @@ const registerAdmin = async(req,res)=>{
       res.status(500).json(error)
       }}
 
-//Login Admin
+//////////////////////// Login Admin //////////////////////////////
+
 const loginAdmin = async(req,res)=>{
 const{username,password}= req.body;
 
@@ -94,7 +89,7 @@ if (![username, email, password].every(field => field)) {
       }
       }
 
-      //Logout the Admin
+  ////////////////////// Logout the Admin /////////////////////////////////////
 
         const logoutAdmin = async(req,res)=>{
         const{token}= req.body;

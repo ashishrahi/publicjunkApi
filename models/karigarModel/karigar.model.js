@@ -1,40 +1,56 @@
 const {mongoose} = require('mongoose');
 
- const karigarSchema = new mongoose.Schema({
-  
-    category:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:'Category',
-    },
-    categoryId:{
+//--------------------- addressSchema
+
+const addressSchema = new mongoose.Schema({
+    house:{
         type:String,
-        
+        required: true,
+          },
+    pincode:{
+        type:String,
+        required: true,
+         },
+    city:{
+        type:String,
+        required: true,
+       },
+    country:{
+        type:String,
+        required: true,
+         },
+    status:{
+        type:Boolean,
+        default:'true',
+          },},
+    {timestamps:true})
+
+// ------------ Karigar Schema
+
+ const karigarSchema = new mongoose.Schema({
+    avatar:{
+        type:String,
+        default:'avatar.png'
     },
     name:{
         type:String,
+        uppercase:true,
     },
     phone:{
         type:String,
         required: true,
-        unique: true,
     },
-    house:{
-        type:String,
-        required: true,
+    category:{
+         type:mongoose.Schema.Types.ObjectId,
+         ref: 'Category',
     },
-    city:{
-        type:String,
-        required: true,
-    },
-    country:{
-        type:String,
-        required: true,
-    }
-   
-   
-   
-    
-},
+    address:{
+        type:[addressSchema],
+    },  
+    status:{
+        type:Boolean,
+        default:'true',
+     },},
     {timestamps:true})
 
 

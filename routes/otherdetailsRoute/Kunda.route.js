@@ -1,23 +1,23 @@
 const express = require('express')
 const router = express.Router();
-const createError = require('../../utilitiesFunctions/error')
-const { createKundas,getKundas,} = require('../../controller/otherDetails/Kunda.controller');
-
+const { createKundas,getKundas,getKundasStatus,updateKundas,getIdbyKundas} = require('../../controller/otherDetails/Kunda.controller');
+const upload = require('../../middleware/multer.middleware')
 
 //Create a Kunda
-router.post('/kunda',createKundas);
-
-//Get a Kunda
+router.post('/kunda',upload.none(),createKundas);
 
 //Get all Kunda
 router.get('/',getKundas);
 
-//Update a Kunda
+// Get Kunda by Id
 
-//update Kunda status
+router.get('/:id',getIdbyKundas);
+
+//Get all Kunda
+router.put('/:id',updateKundas);
 
 
-//Delete a Kunda
-
+//Get Update KundaStatus
+router.put('/:id/status',getKundasStatus);
 
 module.exports = router;

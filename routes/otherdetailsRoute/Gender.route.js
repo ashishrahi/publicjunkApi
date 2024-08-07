@@ -1,20 +1,24 @@
 const express = require('express')
 const router = express.Router();
-const createError = require('../../utilitiesFunctions/error')
-const { createGenders,getGenders,} = require('../../controller/otherDetails/Gender.controller');
+const { getbyIdGender,createGenders,getGenders,getStatus,updateGenders} = require('../../controller/otherDetails/Gender.controller');
 
-
-//Create a Gender
+//----------- Create a Gender
 router.post('/gender',createGenders);
 
-//Get a Gender
-
-//Get all Gender
+//------------ Get all Gender
 router.get('/',getGenders);
 
-//Update a Gender
+//------------ Get a Gender by ID
 
-//update Gender status
+router.get('/:id',getbyIdGender);
+
+//------------ Update Gender
+
+router.put('/:id',updateGenders);
+
+//Update a GenderStatus
+router.put('/:id/status',getStatus)
+
 
 
 //Delete a Gender
