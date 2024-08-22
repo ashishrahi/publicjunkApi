@@ -7,7 +7,6 @@ const authRoute = require('./routes/authRoute/auth.route')
 const usersRoute = require('./routes/usersRoute/users.route')
 const karigarRoute = require('./routes/karigarRoute/Karigar.route')
 const venderRoute = require('./routes/venderRoute/vender.route')
-const subscriptionRoute = require('./routes/subscriptionRoute/subscription.route')
 const colorRoute = require('./routes/otherdetailsRoute/color.route')
 const dandiRoute = require('./routes/otherdetailsRoute/Dandi.route')
 const gaugesizeRoute = require('./routes/otherdetailsRoute/Gaugesize.route')
@@ -21,7 +20,6 @@ const orderRoute = require('./routes/orderRoute/order.route')
 const aboutRoute = require('./routes/aboutRoute/about.route')
 const policyRoute = require('./routes/policyRoute/policy.route')
 const bannerRoute = require('./routes/bannerRoute/banner.route')
-const paymentRoute = require('./routes/paymentRoute/payment.route')
 
 
 
@@ -74,8 +72,6 @@ app.use(express.json());
  app.use('/api/weights',weightRoute)
  app.use('/api/abouts',aboutRoute)
  app.use('/api/orders',orderRoute)
- app.use('/api/payments',paymentRoute)
- app.use('/api/subscriptions',subscriptionRoute)
  app.use('/api/policies',policyRoute)
  app.use('/api/banners',bannerRoute)
 

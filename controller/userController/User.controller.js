@@ -36,8 +36,11 @@ const cloudinary = require('../../config/cloudinary.config')
 
 //---------------- login User
 exports.loginUser=async(req,res)=>{
-    const {email, password}= req.body;
+    const {email, password,status}= req.body;
+    console.log(req.body);
+    
     try {
+        if(status == 'true'){
         const user = await User.findOne({email})
         if(!user) return res.status(404).json({message:"User not found"})
         
@@ -53,6 +56,9 @@ exports.loginUser=async(req,res)=>{
                 email:user.email,
                 token:user.token,
                 }})}
+                else{
+                    return res.status(403).json({message:"Access denied"})
+                }}
     
     catch (error) {
         res.status(500).json({error:error.message})

@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const upload = require('../../middleware/multer.middleware');
 const {registerKarigar,getKarigars,getbyIdKarigar,updateKarigarStatus,updateKarigarDetails
-    ,activeKarigarStatus,inactiveKarigarStatus
+    ,activeKarigarStatus,inactiveKarigarStatus,getAssignedKarigar
 }= require('../../controller/karigarController/karigar.controller')
     
 //---------Register
@@ -32,8 +32,11 @@ router.get('/status/true',activeKarigarStatus)
 //................ update Karigar Status
 router.get('/status/false',inactiveKarigarStatus)
 
-
+// ..... updateKarigarDetails
 router.put('/:id',upload.single('file'),updateKarigarDetails)
+
+// ....... getAssignedKarigar
+router.get('/assignedKarigar',getAssignedKarigar)
 
 
 

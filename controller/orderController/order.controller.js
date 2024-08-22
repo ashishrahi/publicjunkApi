@@ -5,6 +5,7 @@ const Karigar = require('../../models/karigarModel/karigar.model')
 const generateCode = require('../../utilities/GenerateCode')
 
 // ----------------Create a new order
+
 exports.createOrder = async (req, res) => {
     const{status,user,category} = req.body;
     console.log(req.body)
@@ -91,7 +92,6 @@ exports.deleteOrder = async (req, res) => {
 
 // ---------------- Count Orders
 exports.countOrders = async(req,res)=>{
-    
     try {
         const countOrderData = await Order.countDocuments({});
         res.status(200).json(countOrderData);
@@ -133,3 +133,17 @@ exports.countOrders = async(req,res)=>{
             res.status(500).json({ error: error.message });
         }
     }
+
+
+    exports.orderKarigarUpdate = async(req,res)=>{
+        const{statuskarigar}= req.body;
+        console.log(req.body);
+        try{
+        const karigarOrderUpdate = await Order.findByIdAndUpdate(req.params.id,{$set:{statuskarigar:statuskarigar}})
+        if(!karigarOrderUpdate) return res.status(404).json({message: 'Order not found'})
+            res.status(200).json(karigarOrderUpdate)
+           } 
+        catch (error) {
+            res.status(500).json({ error: error.message });
+        }}
+    

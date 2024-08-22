@@ -110,6 +110,16 @@ exports.getKarigars = async(req,res)=>{
                 }
                };
 
+//Assigned Karigar
+exports.getAssignedKarigar = async (req, res) => {
+    try {
+        const assignedKarigar = await Karigar.findByIdAndUpdate(req.params.id, {$set:{assignedTo: req.body.assignedTo}}, {new: true})
+        if(!assignedKarigar) return res.status(404).send('Karigar not found')
+        res.status(200).json(assignedKarigar)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
 
 
     

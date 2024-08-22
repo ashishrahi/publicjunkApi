@@ -30,6 +30,11 @@ const orderSchema = new mongoose.Schema({
         enum: ['New','Rejected','Accepted'],
         default: 'New'
             },
+    statuskarigar:{
+        type: String,
+        enum: ['New','Accepted','Rejected','Completed','ReadytoPick'],
+        default: 'New'
+    }
   
 });
 

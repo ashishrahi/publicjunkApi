@@ -40,6 +40,10 @@ const addressSchema = new mongoose.Schema({
         type:String,
         required: true,
     },
+    order:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'Order',
+    },
     category:{
          type:mongoose.Schema.Types.ObjectId,
          ref: 'Category',

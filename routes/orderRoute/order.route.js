@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {assignOrder,createOrder,getAllOrders,getOrderById,updateOrderStatus,deleteOrder,countOrders,UpdateOrder} = require('../../controller/orderController/order.controller');
+const {assignOrder,createOrder,getAllOrders,getOrderById,updateOrderStatus,deleteOrder,countOrders,UpdateOrder,orderKarigarUpdate} = require('../../controller/orderController/order.controller');
 
 // Create a new Order
 router.post('/order', createOrder);
@@ -15,7 +15,7 @@ router.get('/:id', getOrderById);
 router.put('/:id/status', updateOrderStatus);
 
 // Delete an Order
-router.delete('/orders/:id', deleteOrder);
+router.delete('/:id', deleteOrder);
 
 //Count Orders 
 router.get('/count-orders',countOrders)
@@ -26,6 +26,8 @@ router.put('/:id',UpdateOrder)
 // assign Order
 router.put('/:id/assign-karigar', assignOrder)
 
+//Update KarigarStatus
+router.put('/:id/karigarorder',orderKarigarUpdate)
 
 
 
