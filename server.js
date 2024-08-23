@@ -45,9 +45,7 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-
 //------------------------ middleware utilities -----------------------------------
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());

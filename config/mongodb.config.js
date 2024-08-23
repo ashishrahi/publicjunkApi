@@ -8,8 +8,6 @@ const connectDB = async()=>{
      console.log('connection is established')   
     })
 
-
-
 }
 
 module.exports = connectDB;
