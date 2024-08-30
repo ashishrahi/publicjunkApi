@@ -40,12 +40,13 @@ require('dotenv').config();
 connectDB(); 
 //configuration
 const app = express();
-const port = process.env.PORT||5500;
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
 //------------------------ middleware utilities -----------------------------------
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
