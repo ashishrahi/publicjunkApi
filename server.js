@@ -40,7 +40,7 @@ require('dotenv').config();
 connectDB(); 
 //configuration
 const app = express();
-const port = 5400;
+const port = 10000 ;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
