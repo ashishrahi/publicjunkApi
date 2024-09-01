@@ -2,7 +2,6 @@ const express = require('express')
 const bodyParser = require('body-parser');
 
 //--------------Imported components 
-
 const authRoute = require('./routes/authRoute/auth.route')
 const usersRoute = require('./routes/usersRoute/users.route')
 const karigarRoute = require('./routes/karigarRoute/Karigar.route')
@@ -20,6 +19,7 @@ const orderRoute = require('./routes/orderRoute/order.route')
 const aboutRoute = require('./routes/aboutRoute/about.route')
 const policyRoute = require('./routes/policyRoute/policy.route')
 const bannerRoute = require('./routes/bannerRoute/banner.route')
+const otpRoute = require('./routes/otpRoute/otp.route')
 
 
 
@@ -72,6 +72,7 @@ app.use(express.json());
  app.use('/api/orders',orderRoute)
  app.use('/api/policies',policyRoute)
  app.use('/api/banners',bannerRoute)
+ app.use('/api/otp',otpRoute)
 
 
 

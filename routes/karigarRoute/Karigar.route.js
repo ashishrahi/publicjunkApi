@@ -10,7 +10,6 @@ const {registerKarigar,getKarigars,getbyIdKarigar,updateKarigarStatus,updateKari
 
 router.post('/karigar',upload.single('file'),registerKarigar)
 
-//------------karigar with category
 
 
 //-------------- updateKarigarStatus

@@ -8,7 +8,6 @@ const cloudinary = require('../../config/cloudinary.config')
        //-------------------- signUp User
 
     exports.signupUser = async(req,res)=>{
-    console.log(req.body)
     const {username, email, password, phone, house, city,country}= req.body;
     try {
         //--------- existing User
@@ -37,7 +36,6 @@ const cloudinary = require('../../config/cloudinary.config')
 //---------------- login User
 exports.loginUser=async(req,res)=>{
     const {email, password,status}= req.body;
-    console.log(req.body);
     
     try {
         if(status == 'true'){
