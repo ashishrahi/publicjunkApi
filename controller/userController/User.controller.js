@@ -1,6 +1,6 @@
 const User = require('../../models/userModel/User.model')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const upload = require('../../middleware/multer.middleware')
 const cloudinary = require('../../config/cloudinary.config')
