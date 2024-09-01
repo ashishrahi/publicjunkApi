@@ -19,7 +19,6 @@ const orderRoute = require('./routes/orderRoute/order.route')
 const aboutRoute = require('./routes/aboutRoute/about.route')
 const policyRoute = require('./routes/policyRoute/policy.route')
 const bannerRoute = require('./routes/bannerRoute/banner.route')
-const otpRoute = require('./routes/otpRoute/otp.route')
 
 
 
@@ -72,7 +71,6 @@ app.use(express.json());
  app.use('/api/orders',orderRoute)
  app.use('/api/policies',policyRoute)
  app.use('/api/banners',bannerRoute)
- app.use('/api/otp',otpRoute)
 
 
 
