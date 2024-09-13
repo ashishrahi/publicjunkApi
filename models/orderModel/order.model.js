@@ -14,11 +14,16 @@ const orderSchema = new mongoose.Schema({
      ref: 'Category',
               },
 
-    karigar:{
+    driver:{
         type:mongoose.Schema.Types.ObjectId,
-        ref: 'Karigar',
+        ref: 'Driver',
          default: null,
               },
+warehouse:{
+     type:mongoose.Schema.Types.ObjectId,
+                ref: 'warehouse',
+                 default: null,
+                      },
    
     orderdate: {
         type: Date,
@@ -30,9 +35,10 @@ const orderSchema = new mongoose.Schema({
         enum: ['New','Rejected','Accepted'],
         default: 'New'
             },
-    statuskarigar:{
+    statusdriver:{
         type: String,
-        enum: ['New','Accepted','Rejected','Completed','ReadytoPick'],
+        enum: ['New','Pending','Working','Rejected','Cancelled','Picked','Delivered'],
+    
         default: 'New'
     }
   

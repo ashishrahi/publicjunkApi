@@ -1,6 +1,6 @@
 const Policy = require('../../models/policyModel/policy.model')
 
-//------------------create Policy
+////////////////////////////////// create Policy//////////////////////////////////////////////////////////////
 
 exports.createPolicy= async(req,res)=>{
     const{title,description}= req.body;
@@ -16,7 +16,8 @@ catch (error) {
     res.status(400).json({error: error.message})
 }}
 
-//------------------get all Policies
+////////////////////////////////// Get all Policies //////////////////////////////////////////////////////////////
+
 
 exports.getPolicy = async(req,res)=>{
     try {
@@ -28,7 +29,8 @@ exports.getPolicy = async(req,res)=>{
         }}
 
 
-//------------------get Policy by ID
+////////////////////////////////// get Policy by ID //////////////////////////////////////////////////////////////
+
 exports.getbyIdPolicy = async(req,res,nex)=>{
     try {
         const policyId = await Policy.findById(req.params.id)
@@ -39,7 +41,9 @@ exports.getbyIdPolicy = async(req,res,nex)=>{
         }}
 
     
-    //------------------update Policy by ID
+////////////////////////////////// update Policy by ID //////////////////////////////////////////////////////////////
+
+
     exports.updatePolicyByID = async(req,res,next)=>{
         try {
             const policyId = await Policy.findByIdAndUpdate(req.params.id, req.body, {new: true})
@@ -50,7 +54,8 @@ exports.getbyIdPolicy = async(req,res,nex)=>{
         }}
 
 
-    //------------------delete Policy by ID
+////////////////////////////////// delete Policy by ID //////////////////////////////////////////////////////////////
+
     exports.deletePolicyByID = async(req,res,next)=>{
         try {
             const policyId = await Policy.findByIdAndDelete(req.params.id)
@@ -60,6 +65,9 @@ exports.getbyIdPolicy = async(req,res,nex)=>{
             res.status(500).json({error: error.message})
         }}
  
+   ////////////////////////////////// Update Policy by ID //////////////////////////////////////////////////////////////
+
+
        exports.updatePolicy = async(req,res)=>{
         try {
             const policyId = await Policy.findByIdAndUpdate(req.params.id, {$set:{...req.body}}, {new: true})

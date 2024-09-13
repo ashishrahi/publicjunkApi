@@ -5,6 +5,7 @@ const cloudinary = require('../../config/cloudinary.config')
 
 
 
+////////////////////////////////// Create Banner  //////////////////////////////////////////////
 
 exports.createbanners = async(req,res)=>{
 
@@ -21,7 +22,8 @@ exports.createbanners = async(req,res)=>{
     }
 }
 
-//---------- All Banner
+////////////////////////////////// All Banner  //////////////////////////////////////////////
+
 
 exports.getAllBanners = async(req,res)=>{
     try {

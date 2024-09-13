@@ -1,10 +1,10 @@
 const Order = require('../../models/orderModel/order.model');
 const User = require('../../models/userModel/User.model')
 const Category = require('../../models/categoryModel/category.model')
-const Karigar = require('../../models/karigarModel/karigar.model')
+const Driver = require('../../models/driverModel/driver.model')
 const generateCode = require('../../utilities/GenerateCode')
 
-// ----------------Create a new order
+///////////////////////////////Create a new order ///////////////////////////////////////////////////////////
 
 exports.createOrder = async (req, res) => {
     const{status,user,category} = req.body;
@@ -23,17 +23,18 @@ exports.createOrder = async (req, res) => {
         return res.status(400).json({ message: 'Invalid order status' });
     }};
 
-//------------------ Get all orders
+/////////////////////////////// Get all orders ///////////////////////////////////////////////////////////
+
 exports.getAllOrders = async (req, res) => {
     try { 
-        const data = await Order.find({}).populate('user').populate('category').populate('karigar')
+        const data = await Order.find({}).populate('user').populate('category').populate('Driver')
         const OrderDetails = data.map(
         order => ({
             _id: order._id,
             orderno: order.orderno,
             user: order.user.username,
             category: order.category.categoryname,
-            karigar:order.karigar?order.karigar.name: 'Choose Karigars',
+            Driver:order.Driver?order.Driver.name: 'Choose Drivers',
             orderDate: order.orderdate,
             status: order.status,
             }))
@@ -43,7 +44,8 @@ exports.getAllOrders = async (req, res) => {
         res.status(500).json({ error: error.message });
     }};
 
-//---------------- Get order by ID
+/////////////////////////////// Get order by ID///////////////////////////////////////////////////////////
+
 
 exports.getOrderById = async (req, res) => {
     try {
@@ -57,7 +59,8 @@ exports.getOrderById = async (req, res) => {
         res.status(500).json({ error: error.message });
         }};
 
-//-------------------- Update an order
+/////////////////////////////// Update an order ///////////////////////////////////////////////////////////
+
 exports.updateOrderStatus = async (req, res) => {
     
     const {status} = req.body;
@@ -74,7 +77,8 @@ exports.updateOrderStatus = async (req, res) => {
         res.status(500).json({ error: error.message });
         }};
 
-//-----------------------Delete an order
+/////////////////////////////// Delete an order ///////////////////////////////////////////////////////////
+
 exports.deleteOrder = async (req, res) => {
    
     try {
@@ -90,7 +94,9 @@ exports.deleteOrder = async (req, res) => {
         res.status(500).json({ error: error.message });
         }};
 
-// ---------------- Count Orders
+/////////////////////////////// Count Orders ///////////////////////////////////////////////////////////
+
+
 exports.countOrders = async(req,res)=>{
     try {
         const countOrderData = await Order.countDocuments({});
@@ -100,7 +106,8 @@ exports.countOrders = async(req,res)=>{
         res.status(500).json({ message: error.message });
     }}
 
-    //------------------- Update Order
+/////////////////////////////// Update Order ///////////////////////////////////////////////////////////
+
     exports.UpdateOrder = async (req, res) => {
         const{orderData} = req.body
         console.log(req.body)
@@ -115,16 +122,19 @@ exports.countOrders = async(req,res)=>{
         }
     }
        
+/////////////////////////////// AssignOrder ///////////////////////////////////////////////////////////
+
+
     exports.assignOrder= async(req,res)=>{
-        const{karigarname} = req.body
+        const{Drivername} = req.body
         console.log(req.body)
         console.log(req.params)
-        const karigardetails = await Karigar.findOne({name:karigarname})
-        const karigarId = karigardetails._id
-        console.log(karigarId)
+        const Driverdetails = await Driver.findOne({name:Drivername})
+        const DriverId = Driverdetails._id
+        console.log(DriverId)
 
         try {
-            const updatedOrder = await Order.findByIdAndUpdate(req.params.id, {$set:{karigar:karigarId}}, {new: true});
+            const updatedOrder = await Order.findByIdAndUpdate(req.params.id, {$set:{Driver:DriverId}}, {new: true});
             if (!updatedOrder) {
                 return res.status(404).json({ error: 'Order not found' });
             }
@@ -134,14 +144,16 @@ exports.countOrders = async(req,res)=>{
         }
     }
 
+/////////////////////////////// orderDriverUpdate ///////////////////////////////////////////////////////////
 
-    exports.orderKarigarUpdate = async(req,res)=>{
-        const{statuskarigar}= req.body;
+
+    exports.orderDriverUpdate = async(req,res)=>{
+        const{statusDriver}= req.body;
         console.log(req.body);
         try{
-        const karigarOrderUpdate = await Order.findByIdAndUpdate(req.params.id,{$set:{statuskarigar:statuskarigar}})
-        if(!karigarOrderUpdate) return res.status(404).json({message: 'Order not found'})
-            res.status(200).json(karigarOrderUpdate)
+        const DriverOrderUpdate = await Order.findByIdAndUpdate(req.params.id,{$set:{statusDriver:statusDriver}})
+        if(!DriverOrderUpdate) return res.status(404).json({message: 'Order not found'})
+            res.status(200).json(DriverOrderUpdate)
            } 
         catch (error) {
             res.status(500).json({ error: error.message });

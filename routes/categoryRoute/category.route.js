@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const {updateCategory,getCategoryById,registerCategories,getCategories,updateCategoryStatus,activeCategoryStatus,inactiveCategoryStatus}= require('../../controller/categoryController/category.controller')
+const {updateCategory,getCategoryById,createCategories,getCategories,updateCategoryStatus,activeCategoryStatus,inactiveCategoryStatus}= require('../../controller/categoryController/category.controller')
 const upload = require('../../middleware/multer.middleware') 
 
-//------------Register
-router.post('/category',upload.single('file'),registerCategories)
+//------------Create a new category
+router.post('/create',upload.single('image'),createCategories)
 
 //-------------get Categories
 router.get('/',getCategories)

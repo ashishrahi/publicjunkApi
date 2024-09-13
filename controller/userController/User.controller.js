@@ -4,8 +4,8 @@ const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const upload = require('../../middleware/multer.middleware')
 const cloudinary = require('../../config/cloudinary.config')
-
-       //-------------------- signUp User
+ 
+//////////////////////////// signUp User ////////////////////////////////////////////////////
 
     exports.signupUser = async(req,res)=>{
     const {username, email, password, phone, house, city,country}= req.body;
@@ -33,7 +33,7 @@ const cloudinary = require('../../config/cloudinary.config')
         res.status(500).json({error:error.message})
         }}
 
-//---------------- login User
+//////////////////////////////////  login User  //////////////////////////////////////////////////////////////////
 exports.loginUser=async(req,res)=>{
     const {email, password,status}= req.body;
     
@@ -66,7 +66,7 @@ exports.loginUser=async(req,res)=>{
 
 
 
-//----------------------------All Users 
+////////////////////////////////// All Users //////////////////////////////////////////////////
 
 
     exports.allUsers = async(req,res)=>{
@@ -79,7 +79,7 @@ exports.loginUser=async(req,res)=>{
         }
     }
 
-    ///////////// User_Details //////////////////
+    /////////////     User_Details //////////////////
     
     exports.profileUser= async(req,res)=>{
         try {
@@ -89,7 +89,7 @@ exports.loginUser=async(req,res)=>{
             res.status(500).json(error)
        }}
 
-  //--------------------- Delete User
+  ///////////////////////////  Delete User  ////////////////////////////////////////////////
   exports.deletedUser=async(req,res)=>{
     try {
         const user = await User.findByIdAndDelete(req.params.id)
@@ -98,7 +98,7 @@ exports.loginUser=async(req,res)=>{
         res.status(500).json(error)
     }}
 
-    //--------------------- activeUsers
+/////////////////////////////////// activeUsers /////////////////////////////////////////////////
    
     exports.activeUsers=async(req,res)=>{
         try {
@@ -108,7 +108,7 @@ exports.loginUser=async(req,res)=>{
             res.status(500).json(error)
         }}
 
- //-------------------- InactiveUsers--------------------
+ ////////////////////////////// InactiveUsers ////////////////////////////////////////////////////
 
         exports.inactiveUsers=async(req,res)=>{
             try {
@@ -118,7 +118,7 @@ exports.loginUser=async(req,res)=>{
                 res.status(500).json(error)
             }}
 
-//---------------- Update Status
+///////////////////////////////  Update Status  /////////////////////////////////////////////
     exports.updateStatus = async(req,res)=>{
     try {
         const userStatus = await User.findByIdAndUpdate(req.params.id, {new: true})
@@ -129,7 +129,7 @@ exports.loginUser=async(req,res)=>{
         res.status(500).json(error)
     }}
 
-    //---------------- Check User
+///////////////////////////// Check User ////////////////////////////////////////////////////////////////
     exports.checkUser = async(req,res)=>{
         try {
             const user = await User.findOne({phone: req.body.phone})
@@ -138,7 +138,7 @@ exports.loginUser=async(req,res)=>{
             res.status(500).json(error)
         }}
 
-//----------------------- Counter Users
+//////////////////////////////////  Counter Users  //////////////////////////////////////////////////////////////////
 exports.countUsers = async (req, res) => {
     try {
       const userCount = await User.countDocuments();

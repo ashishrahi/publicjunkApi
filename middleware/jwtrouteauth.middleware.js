@@ -1,34 +1,24 @@
-const express = require('express');
 const jwt = require('jsonwebtoken');
-const app = express();
+require('dotenv').config(); // Make sure to load environment variables
 
-// Secret key for signing and verifying JWT tokens (should be stored securely)
-const JWT_SECRET = process.env.JWT_SECRET_KEY;
+const { JWT_SECRET_KEY } = process.env; // Your JWT secret key from environment variables
 
-//////////////// Middleware to verify JWT token ///////////////////////
+function generateToken(admin) {
+  // Define the payload
+  const payload = {
+    id: admin.id,
+    email: admin.email,
+    // Add more user info if needed
+  };
 
-function authenticateJWT(req, res, next) {
-    const token = req.headers.authorization?.split(' ')[1];
+  // Define options for the token
+  const options = {
+    expiresIn: '1h', // Token expiry time (e.g., 1 hour)
+  };
 
-    if (token) {
-        jwt.verify(token, JWT_SECRET, (err, decoded) => {
-            if (err) {
-                return res.status(401).json({ message: 'Failed to authenticate token.' });
-            }
-            req.auth = { user: decoded }; 
-            next();
-        });
-    } else {
-        res.status(401).json({ message: 'No token provided.' });
-    }
+  // Generate the token
+  const token = jwt.sign(payload, JWT_SECRET_KEY, options);
+  return token;
 }
 
-///////////////////////// generating a JWT token /////////////////////////
-
-function generateToken(user) {
-    return jwt.sign({ username: 1234,pasword:1234 }, JWT_SECRET, {
-        expiresIn: '1h' // Token expires in 1 hour
-    });
-}
-
-module.exports = authenticateJWT;
+module.exports = generateToken;

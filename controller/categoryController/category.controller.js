@@ -1,15 +1,17 @@
 const Category = require("../../models/categoryModel/category.model.js");
-    const multer = require('multer')
-    const upload = require('../../middleware/multer.middleware.js')
-    const cloudinary = require('../../config/cloudinary.config')
+const multer = require('multer')
+const upload = require('../../middleware/multer.middleware.js')
+const cloudinary = require('../../config/cloudinary.config')
 
-    //------------------------------Create Category
+////////////////////////////////// Create Categories  //////////////////////////////////////////////
 
-    exports.registerCategories = async(req,res)=>{
-        const registerData = JSON.parse(req.body.values)
+
+    exports.createCategories = async(req,res)=>{
+        // const registerData = JSON.parse(req.body.values)
+        const createdData = req.body;
         try {
             const result = await cloudinary.uploader.upload(req.file.path)
-            const newCategory = new Category({...registerData,image:result.secure_url})
+            const newCategory = new Category({...createdData,image:result.secure_url})
             await newCategory.save()
             res.status(200).json(newCategory)
             }
@@ -20,7 +22,8 @@ const Category = require("../../models/categoryModel/category.model.js");
 
 
          
-// --------------- get category --------------------
+////////////////////////////////// Read Category  //////////////////////////////////////////////
+
 
 exports.getCategoryById = async (req, res) => {
     try {
@@ -32,7 +35,8 @@ exports.getCategoryById = async (req, res) => {
     }
 };
 
-//-------------- Update Category
+////////////////////////////////// Update Category  //////////////////////////////////////////////
+
 
 exports.updateCategory = async (req, res) => {
     const{categoryname} = req.body
@@ -49,7 +53,8 @@ exports.updateCategory = async (req, res) => {
 };
 
 
-//--------------------------get All Categories
+////////////////////////////////// All Categories  //////////////////////////////////////////////
+
         
         exports.getCategories = async (req, res) => {
         try {
@@ -62,7 +67,8 @@ exports.updateCategory = async (req, res) => {
     }
 };
 
-//---------------------Category Status
+////////////////////////////////// Categories Status  //////////////////////////////////////////////
+
 
 exports.updateCategoryStatus = async(req,res)=>{
     try {
@@ -75,7 +81,8 @@ exports.updateCategoryStatus = async(req,res)=>{
         res.status(500).json(error)
     }}
 
-//--------------------- Active Category Status
+////////////////////////////////// Active Categories Status  //////////////////////////////////////////////
+
 
 exports.activeCategoryStatus = async(req,res)=>{
     try {
@@ -87,7 +94,8 @@ exports.activeCategoryStatus = async(req,res)=>{
     }
 }
 
-//--------------------- inActive Category Status
+////////////////////////////////// InActive Categories Status  //////////////////////////////////////////////
+
 
 exports.inactiveCategoryStatus = async(req,res)=>{
     try {

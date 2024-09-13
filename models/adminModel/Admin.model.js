@@ -2,9 +2,6 @@ const {mongoose} = require('mongoose');
 
  const adminSchema = new mongoose.Schema({
   
-    username:{
-        type:String,
-    },
     email:{
         type:String,
     },
@@ -14,9 +11,10 @@ const {mongoose} = require('mongoose');
     token:{
         type:String,
     },
-    tokenExpiresAt:{
-        type:Date,
-    }
+    tokenExpiresAt: {
+        type: Date,
+      },
+
     
 },
     {timestamps:true})

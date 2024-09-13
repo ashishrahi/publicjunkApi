@@ -2,7 +2,8 @@ const Payment = require('../../models/paymentModel/payment.model')
 const User = require('../../models/userModel/User.model')
 const Order = require('../../models/orderModel/order.model')
 
-//-------------- Create Payment
+
+///////////////////////////////// Create Payment //////////////////////////////////////////////////////////
 exports.newPayment = async(req,res)=>{
     try {
         const newPayment = new Payment({...req.body})
@@ -13,7 +14,7 @@ exports.newPayment = async(req,res)=>{
         res.status(500).json(error)
         }}
 
-//--------------------- All Payments
+///////////////////////////////// All Payments //////////////////////////////////////////////////////////
 
         exports.allPayments = async(req,res)=>{
            

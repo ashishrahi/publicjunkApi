@@ -1,8 +1,8 @@
 const About = require('../../models/aboutModel/about.model')
 
-//createAbout
 
-//--------------- Create About
+////////////////////////////////// Create About //////////////////////////////////////////////
+
 
 exports.createAbout=async(req,res)=>{
     const {title,description}=req.body;
@@ -17,7 +17,11 @@ exports.createAbout=async(req,res)=>{
         res.status(500).json({message:error.message})
     }}
 
-//-----------------------Get About
+
+
+///////////////////////////// getAbout ///////////////////////////
+
+
 
     exports.getAbout = async(req,res)=>{
         try {
@@ -27,7 +31,8 @@ exports.createAbout=async(req,res)=>{
             res.status(500).json({message:error.message})
         }}
 
-//---------------- get By Id About
+///////////////////////////// get By Id About ///////////////////////////
+
 
 exports.getbyIdAbout = async(req,res)=>{
     try {
@@ -39,7 +44,7 @@ exports.getbyIdAbout = async(req,res)=>{
        }
        }
 
-//-----------------------Update About
+////////////////////////////////// Update About //////////////////////////////////////////////
 
         exports.updateAbout = async(req,res)=>{
             const {title, description} = req.body;
@@ -54,7 +59,9 @@ exports.getbyIdAbout = async(req,res)=>{
 
 
 
-//---------------------- Delete About
+////////////////////////////////// Delete About //////////////////////////////////////////////
+
+
 
         exports.deleteAbout = async(req,res)=>{
             try {
