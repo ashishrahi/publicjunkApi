@@ -7,7 +7,7 @@ const generateToken = require('../../middleware/jwtrouteauth.middleware')
 
 ////////////////////////////////// Register  ////////////////////////////////////////////// exports.signupUser = async(req,res)=>{
   exports.signupAdmin = async(req,res)=>{
-    const { email, password}= req.body;
+    const { username,email, password}= req.body;
     try {
         
         //-------------- Password hashing

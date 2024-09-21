@@ -3,13 +3,14 @@ const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 
+
 //--------------Imported components 
 const adminRoute = require('./routes/adminRoute/admin.route')
 const usersRoute = require('./routes/usersRoute/users.route')
 const driverRoute = require('./routes/driverRoute/Driver.route')
 const venderRoute = require('./routes/venderRoute/vender.route')
 const categoryRoute =require('./routes/categoryRoute/category.route')
-const subcategoryRoute =require('./routes/subcategoryRoute/subcategory.route')
+const productRoute =require('./routes/productRoute/product.route')
 const orderRoute = require('./routes/orderRoute/order.route')
 const aboutRoute = require('./routes/aboutRoute/about.route')
 const policyRoute = require('./routes/policyRoute/policy.route')
@@ -60,7 +61,6 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(limiter);
 app.use(helmet());
-
 //------------------------------- Routes  ----------------------------------------------
 
 app.use('/api/admin',adminRoute);
@@ -70,7 +70,7 @@ app.use('/api/cities',cityRoute);
 app.use('/api/pincodes',pincodeRoute);
  app.use('/api/users',usersRoute);
  app.use('/api/categories',categoryRoute)
- app.use('/api/subcategories',subcategoryRoute)  
+ app.use('/api/products',productRoute)  
  app.use('/api/orders',orderRoute)
 
  app.use('/api/venders',venderRoute)

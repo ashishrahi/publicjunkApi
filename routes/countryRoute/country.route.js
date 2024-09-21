@@ -1,16 +1,28 @@
 const express = require('express');
 const router = express.Router();
 
-const {createCountry,getCountry
+const {createCountry,getCountry,updateCountry,updateStatusCountry,getByIdCountry
 }= require('../../controller/countryController/country.controller')
     
-//---------createCountry
+/////////////////////// createCountry //////////////////////////////////////////////////
+
 router.post('/country',createCountry)
 
-//---------getCountry
+//////////////////////// GetbyIdcountry //////////////////////////
+
+router.get('/:id',getByIdCountry)
+
+/////////////////// getCountries //////////////////////////////////////////////////
+
 router.get('/',getCountry)
 
+///////////////////////// Update Country //////////////////////////////////////////////////////////
 
+router.put('/:id',updateCountry)
+
+/////////////////////////////// Update status //////////////////////////////////////////////////////////
+
+router.put('/:id/status',updateStatusCountry)
 
 
 

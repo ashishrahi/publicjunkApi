@@ -1,14 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const {createState,getState} = require('../../controller/stateController/state.contoller');
+const {createState,getState,getStatusState} = require('../../controller/stateController/state.contoller');
 
-// Create a new Order
-router.post('/create', createState);
+/////////////////////////////   Create a new State  //////////////////////////////
 
-// Get all Orders
+router.post('/state', createState);
+
+////////////////////////////////  Get all State //////////////////////////////////
+
 router.get('/', getState);
 
+////////////////////////////////  Get status State //////////////////////////////////
 
+router.put('/:id/status', getStatusState);
 
 
 

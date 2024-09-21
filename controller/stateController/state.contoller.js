@@ -3,7 +3,7 @@ const State = require('../../models/stateModel/state.model')
 const Country = require('../../models/countryModel/country.model')
 
 
-//  Create a new State
+/////////////////////////  Create a new State  ////////////////////////////////////////////
     exports.createState= async(req,res)=>{
     
     const { statename,countryname } = req.body;
@@ -11,7 +11,7 @@ const Country = require('../../models/countryModel/country.model')
    
    // Country Validation
     const findCountry = await Country.findOne({countryname: countryname})
-    
+    console.log(findCountry)
         const countryId = findCountry._id;
         const newstate = new State({ statename, country:countryId });
         await newstate.save();
@@ -21,13 +21,35 @@ const Country = require('../../models/countryModel/country.model')
         res.status(500).json({ message: error.message });
         }}
 
-      
-    exports.getState= async(req,res)=>{
+   ////////////////////////////  Get All States  ////////////////////////////////////////////   
+    
+   exports.getState= async(req,res)=>{
         try{
-        const state = await State.find({}).populate('country')
-        res.json(state)
+        const allstate = await State.find({}).populate('country')
+        const formattedStates = allstate.map(state => ({
+            _id: state._id,
+            statename: state.statename,
+            countryname: state.country?.countryname,
+            status: state.status, 
+            createAt:state.createdAt
+
+        }));
+        
+        res.json(formattedStates)
         }catch (error) {
             res.status(500).json({ message: error.message });
-        }
-      
-    }
+        }}
+
+
+   ////////////////////////////  Status of States  ////////////////////////////////////////////   
+
+   exports.getStatusState = async(req,res)=>{
+    try {
+        const statusState = await State.findByIdAndUpdate(req.params.id)
+        if(!statusState) return res.status(404).send('State not found')
+            statusState.status = !statusState.status
+        await statusState.save()
+        res.status(200).json(statusState)
+    } catch (error) {
+        res.status(500).json(error)
+    }}

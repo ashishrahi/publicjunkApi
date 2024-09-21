@@ -7,7 +7,7 @@ const cloudinary = require('../../config/cloudinary.config')
 
 
     exports.createCategories = async(req,res)=>{
-        // const registerData = JSON.parse(req.body.values)
+        const registerData = JSON.parse(req.body.values)
         const createdData = req.body;
         try {
             const result = await cloudinary.uploader.upload(req.file.path)

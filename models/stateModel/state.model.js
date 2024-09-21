@@ -14,6 +14,7 @@ const {mongoose} = require('mongoose');
       default: true,
     },
     
+    
      },
     {timestamps:true})
 
