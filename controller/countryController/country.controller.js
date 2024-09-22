@@ -24,7 +24,26 @@ exports.createCountry = async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   };
+
   
+////////////////////////////////// List of countries  //////////////////////////////////////////////
+
+exports.listCountries = async(req,res)=>{
+  try {
+    const Listcountries = await Country.find({});
+    
+    res.status(200).json({
+       countryname: Listcountries.map(country => country.countryname) // Return an array of country names
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server Error',
+      error: error.message
+    });
+  }
+}
+
 ////////////////////////////////// getCountrybyId  //////////////////////////////////////////////
 
   exports.getByIdCountry = async(req,res)=>{

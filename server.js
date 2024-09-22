@@ -25,7 +25,7 @@ const financeDepartRoute = require('./routes/financeDepartRoute/financeDepart.ro
 //rate limitter
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100 
+  max: 10
 });
 
 

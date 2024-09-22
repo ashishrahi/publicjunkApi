@@ -21,6 +21,19 @@ const Country = require('../../models/countryModel/country.model')
         res.status(500).json({ message: error.message });
         }}
 
+
+   ////////////////////////////  Get By Id States  ////////////////////////////////////////////   
+
+exports.getStateById = async(req,res)=>{
+            try{
+            const state = await State.findById(req.params.id).populate('country')
+            res.json(state)
+            }catch (error) {
+                res.status(500).json({ message: error.message });
+            }}
+        
+
+
    ////////////////////////////  Get All States  ////////////////////////////////////////////   
     
    exports.getState= async(req,res)=>{
@@ -53,3 +66,18 @@ const Country = require('../../models/countryModel/country.model')
     } catch (error) {
         res.status(500).json(error)
     }}
+
+   ////////////////////////////  update of States  ////////////////////////////////////////////   
+
+    exports.updateState = async(req,res)=>{
+        const { statename, countryname } = req.body;
+        try{
+        const findCountry = await Country.findOne({countryname})
+
+        const countryId = findCountry._id;
+        const state = await State.findByIdAndUpdate(req.params.id, {$set:{country:countryId,statename:statename}}, { new: true })
+        res.json(state)
+        }catch (error) {
+            res.status(500).json({ message: error.message });
+        }}
+    
