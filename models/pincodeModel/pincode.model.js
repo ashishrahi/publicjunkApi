@@ -4,21 +4,21 @@ const {mongoose} = require('mongoose');
   
     country:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'country',
+        ref:'Country',
         required:true,
     },
     state:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'state',
+        ref:'State',
         required:true,
     },
     city:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'city',
+        ref:'City',
         required:true,
     },
     pincode:{
-        type:String
+        type:Number
     },
     status:{
       type:Boolean,

@@ -4,12 +4,12 @@ const {mongoose} = require('mongoose');
   
     country:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'country',
+        ref:'Country',
         required:true,
     },
     state:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'state',
+        ref:'State',
         required:true,
     },
     cityname:{
