@@ -2,35 +2,45 @@ const {mongoose} = require('mongoose');
 
 //--------------------- addressSchema
 
-// const addressSchema = new mongoose.Schema({
-//     house:{
-//         type:String,
-//         required: true,
-//           },
-//     pincode:{
-//         type:String,
-//         required: true,
-//          },
-//     city:{
-//         type:String,
-//         required: true,
-//        },
-//     country:{
-//         type:String,
-//         required: true,
-//          },
-//     status:{
-//         type:Boolean,
-//         default:'true',
-//           },},
-//     {timestamps:true})
+const addressSchema = new mongoose.Schema({
+    house:{
+        type:String,
+        required: true,
+          },
+    pincode:{
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: 'Pincode',
+        type:String,
+         },
+    city:{
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: 'City',
+        type: String,
+       
+       },
+    country:{               
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: 'Country',
+        type: String,
+ 
+         },
+    status:{
+        type:Boolean,
+        default:'true',
+          },},
+    {timestamps:true})
 
 // ------------ Warehouse Schema
 
  const warehouseSchema = new mongoose.Schema({
    
+// Personel Details
+
     name:{
         type:String,
+    },
+    image:{
+        type: String,
     },
     email:{
         type:String,
@@ -38,11 +48,15 @@ const {mongoose} = require('mongoose');
     mobile:{
         type:String,
     },
-    type:{
+    password:{
         type:String,
     },
+    type:{
+        type:Boolean,
+        enum:['Main','Sub']
+    },
     address:{
-        type:String,
+        type:[addressSchema],
     },  
     status:{
         type:Boolean,

@@ -10,6 +10,7 @@ const usersRoute = require('./routes/usersRoute/users.route')
 const driverRoute = require('./routes/driverRoute/Driver.route')
 const venderRoute = require('./routes/venderRoute/vender.route')
 const categoryRoute =require('./routes/categoryRoute/category.route')
+const subcategoryRoute =require('./routes/subcategoryRoute/subcategory.route')
 const productRoute =require('./routes/productRoute/product.route')
 const orderRoute = require('./routes/orderRoute/order.route')
 const aboutRoute = require('./routes/aboutRoute/about.route')
@@ -70,6 +71,7 @@ app.use('/api/cities',cityRoute);
 app.use('/api/pincodes',pincodeRoute);
  app.use('/api/users',usersRoute);
  app.use('/api/categories',categoryRoute)
+ app.use('/api/subcategories',subcategoryRoute)
  app.use('/api/products',productRoute)  
  app.use('/api/orders',orderRoute)
 

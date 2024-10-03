@@ -7,20 +7,17 @@ const cloudinary = require('../../config/cloudinary.config')
 
 
     exports.createCategories = async(req,res)=>{
-        const registerData = JSON.parse(req.body.values)
-        const {createdData} = req.body;
-        console.log(createdData)
-        console.log(registerData)
+       
 
-        // try {
-        //     const result = await cloudinary.uploader.upload(req.file.path)
-        //     const newCategory = new Category({...createdData,image:result.secure_url})
-        //     await newCategory.save()
-        //     res.status(200).json(newCategory)
-        //     }
-        //  catch (error) {
-        //     res.status(500).json(error)
-        //     }
+        try {
+            const result = await cloudinary.uploader.upload(req.file.path)
+            const newCategory = new Category({...req.body,image:result.secure_url})
+            await newCategory.save()
+            res.status(200).json(newCategory)
+            }
+         catch (error) {
+            res.status(500).json(error)
+            }
         
         }
      
