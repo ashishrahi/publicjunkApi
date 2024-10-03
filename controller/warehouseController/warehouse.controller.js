@@ -2,23 +2,40 @@ const Warehouse = require('../../models/warehouseModel/warehouse.modal.js')
 const multer = require('multer')
 const upload = require('../../middleware/multer.middleware.js')
 const cloudinary = require('../../config/cloudinary.config')
+const bcrypt = require('bcrypt');
 
 ////////////////////////////////// Create Warehouses  //////////////////////////////////////////////
 
 
-    exports.createWarehouse = async(req,res)=>{
 
-        try {
-            const result = await cloudinary.uploader.upload(req.file.path)
-            const newWarehouse = new Warehouse({...req.body,image:result.secure_url})
-            await newWarehouse.save()
-            res.status(200).json(newWarehouse)
-            }
-         catch (error) {
-            res.status(500).json(error)
-            }
-        
-        }
+exports.createWarehouse = async (req, res) => {
+    try {
+        // Hash the password
+        const saltRounds = 10; // You can adjust the number of salt rounds for more security
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+
+        // Upload image to Cloudinary
+        console.log("Uploading to Cloudinary:", req.file.path);
+        const result = await cloudinary.uploader.upload(req.file.path);
+        console.log("Cloudinary result:", result);
+
+        // Create a new warehouse object
+        const newWarehouse = new Warehouse({
+            ...req.body,
+            password: hashedPassword, // Save the hashed password
+            image: result.secure_url,
+        });
+
+        // Save to the database
+        await newWarehouse.save();
+        res.status(200).json(newWarehouse);
+    } catch (error) {
+        console.error("Error saving warehouse:", error);
+        res.status(500).json({ message: "Failed to create warehouse", error: error.message });
+    }
+};
+
+
      
 
 

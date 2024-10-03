@@ -7,7 +7,7 @@ const generateCode = require('../../utilities/GenerateCode')
 ///////////////////////////////Create a new order ///////////////////////////////////////////////////////////
 
 exports.createOrder = async (req, res) => {
-    const{status,user,category} = req.body;
+    const{user,category} = req.body;
     console.log(req.body)
     if(status == 'New' || status == 'Accepted' || status == null){
     const generatecode = generateCode(8)

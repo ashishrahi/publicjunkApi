@@ -52,7 +52,7 @@ const addressSchema = new mongoose.Schema({
         type:String,
     },
     type:{
-        type:Boolean,
+        type:String,
         enum:['Main','Sub']
     },
     address:{

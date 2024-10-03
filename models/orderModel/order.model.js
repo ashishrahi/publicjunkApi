@@ -7,12 +7,24 @@ const orderSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        default: null,
+
           },
     
     category: {
      type:mongoose.Schema.Types.ObjectId,
      ref: 'Category',
-              },
+     default: null,
+
+    },
+
+subcategory: {
+     type:mongoose.Schema.Types.ObjectId,
+     ref: 'Subcategory',
+     default: null,
+
+    },
+           
 
     driver:{
         type:mongoose.Schema.Types.ObjectId,
@@ -21,7 +33,7 @@ const orderSchema = new mongoose.Schema({
               },
 warehouse:{
      type:mongoose.Schema.Types.ObjectId,
-                ref: 'warehouse',
+                ref: 'Warehouse',
                  default: null,
                       },
    
