@@ -1,32 +1,29 @@
 const User = require('../../models/userModel/User.model')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs');
-const multer = require('multer');
-const upload = require('../../middleware/multer.middleware')
-const cloudinary = require('../../config/cloudinary.config')
- 
+const redis = require('../../config/redis.config')
+const {redisOperations,redisClient} = require('../../utilities/redisHelper')
+const REDIS_KEY = 'users';
+const REDIS_CACHE = 3600;
+
+
 //////////////////////////// signUp User ////////////////////////////////////////////////////
 
     exports.signupUser = async(req,res)=>{
     const {username, email, password, phone, house, city,country}= req.body;
+    console.log(req.body)
     try {
-        //--------- existing User
-        
-        
-        //----------- image Validation
-        const image1 = cloudinary.uploader.upload(req.file.path)
-        
-        //-------------- Password hashing
+ // Password hashing   
          
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(req.body.password, salt)
           
-        //................... User Created
+// User Created
          
-        const user = new User({
-           ...req.body,password:hashedPassword,avatar:image1.secure_url
+        const alluser = new User({
+           ...req.body,password:hashedPassword
         })
-        const result = await user.save()
+        const result = await alluser.save()
         res.status(201).json(result)}
     
         catch (error) {
@@ -34,7 +31,8 @@ const cloudinary = require('../../config/cloudinary.config')
         }}
 
 //////////////////////////////////  login User  //////////////////////////////////////////////////////////////////
-exports.loginUser=async(req,res)=>{
+
+exports.loginUser = async(req,res)=>{
     const {email, password,status}= req.body;
     
     try {
@@ -69,25 +67,68 @@ exports.loginUser=async(req,res)=>{
 ////////////////////////////////// All Users //////////////////////////////////////////////////
 
 
-    exports.allUsers = async(req,res)=>{
-        try {
-            const users = await User.find().select('-password').sort({createdAt:-1})
-            res.status(200).json(users)
+exports.allUsers = async (req, res) => {
+    try {
+        // Health check for Redis connection
+        const redisPing = await redisClient.ping();
+        if (redisPing !== 'PONG') {
+            console.error('Redis is not reachable.');
+            return res.status(500).json({ error: 'Redis is not reachable.' });
         }
-        catch (error) {
-            res.status(500).json({error:error.message})
+
+        // Attempt to get data from Redis
+        const resultFromRedis = await redisOperations.getData(REDIS_KEY);
+
+        if (resultFromRedis) {
+            // If data is found in Redis, return it
+            return res.json(resultFromRedis);
         }
+
+        // If no data in Redis, fetch from the database
+        const users = await User.find().select('-password').sort({ createdAt: -1 });
+
+        // Set the fetched data into Redis for future requests
+        await redisOperations.setData(REDIS_KEY, users, REDIS_CACHE);
+
+        // Return the users from the database
+        res.status(200).json(users);
+    } catch (error) {
+        // Handle any errors
+        console.error('Error in allUsers controller:', error);
+        res.status(500).json({ error: 'An error occurred while fetching users.' });
     }
+};
 
     /////////////     User_Details //////////////////
     
-    exports.profileUser= async(req,res)=>{
+    exports.profileUser = async (req, res) => {
+        const userId = req.params.id;
+        const cacheKey = `${REDIS_KEY}:${userId}`;
+    
         try {
-            const profile = await User.findById(req.params.id).select('-password')
-            res.status(200).json(profile)
+            // Check if the user data is available in Redis cache
+            const cachedUser = await redisClient.get(cacheKey);
+            if (cachedUser) {
+                // If cached data exists, parse it and return the response
+                return res.status(200).json(JSON.parse(cachedUser));
+            }
+    
+            // If not in cache, retrieve the user data from MongoDB
+            const profile = await User.findById(userId).select('-password');
+            if (!profile) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+    
+            // Store the retrieved user data in Redis cache
+            await redisClient.setex(cacheKey, REDIS_CACHE, JSON.stringify(profile));
+    
+            // Send the response with the user profile
+            res.status(200).json(profile);
         } catch (error) {
-            res.status(500).json(error)
-       }}
+            res.status(500).json({ message: 'Server Error', error });
+        }
+    };
+    
 
   ///////////////////////////  Delete User  ////////////////////////////////////////////////
   exports.deletedUser=async(req,res)=>{

@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
-
+const {checkHealthStatus} = require('./services/healthService')
 
 //--------------Imported components 
 const adminRoute = require('./routes/adminRoute/admin.route')
@@ -23,6 +23,18 @@ const pincodeRoute = require('./routes/pincodeRoute/pincode.route')
 const warehouseRoute = require('./routes/warehouseRoute/warehouse.route')
 const financeDepartRoute = require('./routes/financeDepartRoute/financeDepart.route')
 
+// Kafka routes
+const { connectProducer: connectOrderProducer } = require('./services/producer/orderProducer');
+const { connectProducer: connectInventoryProducer } = require('./services/producer/inventoryProducer');
+const { connectConsumer: connectOrderConsumer } = require('./services/consumer/orderConsumer');
+const { connectConsumer: connectInventoryConsumer } = require('./services/consumer/inventoryConsumer');
+
+// Start producers and consumers
+// connectOrderProducer();
+// connectInventoryProducer();
+// connectOrderConsumer();
+// connectInventoryConsumer();
+
 //rate limitter
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -41,7 +53,6 @@ var cors = require('cors')
 const path = require('path');
 require('dotenv').config();
 
-
 //----------------------- Database Config -------------------------------------
 
 
@@ -52,6 +63,11 @@ const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+app.get('/healthCheck',checkHealthStatus)
+
+// RabbitMq
+
 
 //------------------------ middleware utilities -----------------------------------
 app.use(express.urlencoded({ extended: true }));
@@ -74,7 +90,6 @@ app.use('/api/pincodes',pincodeRoute);
  app.use('/api/subcategories',subcategoryRoute)
  app.use('/api/products',productRoute)  
  app.use('/api/orders',orderRoute)
-
  app.use('/api/venders',venderRoute)
  app.use('/api/warehouses',warehouseRoute)
  app.use('/api/financedeparts', financeDepartRoute)

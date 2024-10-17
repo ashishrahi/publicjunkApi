@@ -15,11 +15,8 @@ const addressSchema = new mongoose.Schema({
 //----------- User Schema
 
  const UserSchema = new mongoose.Schema({
-  avatar:{
-    type:String,
-    default:'avatar.png',
-  },
-username:{
+ 
+  username:{
         type:String,
         uppercase:true,
           },

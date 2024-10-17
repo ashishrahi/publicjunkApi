@@ -1,13 +1,15 @@
-const redis = require('redis');
-const { RedisClient } = redis;      
+const Redis = require("ioredis");
 
-const client = RedisClient.createClient({
-  host: process.env.REDIS_HOST || 'localhost',
-  port: process.env.REDIS_PORT || 6379,
+const redisClient = new Redis({
+  // host: 'redis-14145.c8.us-east-1-3.ec2.redns.redis-cloud.com',
+  // password: 'wRlPazyJAvANGDSeMzc46zC6XfwGbJDo',
+
+  host: 'localhost',  // Use local Redis instance for testing purposes (docker container)
+  port: 6379,
 });
 
-client.on('error', (err) => {
-  console.error('Redis error: ', err);
-});
+redisClient.on("connect", () => {
+  console.log('Redis Connected');
+}); 
 
-module.exports = client;
+module.exports = redisClient;

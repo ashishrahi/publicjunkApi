@@ -1,61 +1,109 @@
 
 const Country = require('../../models/countryModel/country.model')
+const redis = require('../../config/redis.config')
 
 
 ////////////////////////////////// Create Country  //////////////////////////////////////////////
-
 exports.createCountry = async (req, res) => {
-    const { countryname } = req.body;
-    console.log(req.body);
-  
-    try {
-  
-      const existingCountry = await Country.findOne({ countryname });
-      console.log(existingCountry);
-      if (existingCountry) {
-        return res.status(400).json({ message: "Country already exists in database" });
-      }
-  
-      const newCountry = new Country({ countryname });
-      await newCountry.save();
-  
-      res.status(201).json(newCountry);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+  const { countryname } = req.body;
+
+  try {
+    const existingCountry = await Country.findOne({ countryname });
+    if (existingCountry) {
+      return res.status(400).json({ message: "Country already exists in database" });
     }
-  };
+
+    const newCountry = new Country({ countryname });
+    await newCountry.save();
+
+    // Invalidate cache when a new country is added
+    redis.del('countries');
+
+    res.status(201).json(newCountry);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
   
 ////////////////////////////////// List of countries  //////////////////////////////////////////////
 
-exports.listCountries = async(req,res)=>{
+
+exports.listCountries = async (req, res) => {
   try {
-    const Listcountries = await Country.find({});
-    
-    res.status(200).json({
-       countryname: Listcountries.map(country => country.countryname) // Return an array of country names
+    // Log message indicating function execution
+    console.log('Checking Redis connection and fetching countries...');
+
+    // Try to fetch the countries list from Redis
+    redis.get('countries', async (err, countries) => {
+      if (err) {
+        // If there's an error with Redis, log it
+        console.error('Error fetching from Redis:', err);
+      }
+
+      if (countries) {
+        // If found in Redis, log the data and return cached data
+        console.log('Data found in Redis:', countries);
+        return res.status(200).json(JSON.parse(countries));
+      }
+
+      // If not in Redis, fetch from MongoDB
+      console.log('Data not found in Redis. Fetching from MongoDB...');
+      const Listcountries = await Country.find({});
+      const countryNames = Listcountries.map(country => country.countryname);
+
+      // Cache the result in Redis
+      redis.set('countries', JSON.stringify(countryNames), 'EX', 3600, (err) => {
+        if (err) {
+          console.error('Error setting data to Redis:', err);
+        } else {
+          console.log('Data cached in Redis for 1 hour.');
+        }
+      });
+
+      // Respond with data from MongoDB
+      res.status(200).json({ countryname: countryNames });
     });
   } catch (error) {
+    // Log the error if something goes wrong
+    console.error('Server error:', error);
     res.status(500).json({
       success: false,
       message: 'Server Error',
       error: error.message
     });
   }
-}
+};
+
+
 
 ////////////////////////////////// getCountrybyId  //////////////////////////////////////////////
 
-  exports.getByIdCountry = async(req,res)=>{
-    try{
-        const detailcountry = await Country.findById(req.params.id)
-        if(!detailcountry) return res.status(404).json({ message: "Country not found" });
-        res.json(detailcountry)
-        }catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-  
+exports.getByIdCountry = async (req, res) => {
+  try {
+    const countryId = req.params.id;
+
+    // Check if the country is cached in Redis
+    redis.get(`country:${countryId}`, async (err, cachedCountry) => {
+      if (cachedCountry) {
+        return res.status(200).json(JSON.parse(cachedCountry));
+      }
+
+      // If not cached, fetch from the database
+      const detailcountry = await Country.findById(countryId);
+      if (!detailcountry) return res.status(404).json({ message: "Country not found" });
+
+      // Cache the fetched country
+      redis.set(`country:${countryId}`, JSON.stringify(detailcountry), 'EX', 3600);
+
+      res.json(detailcountry);
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
+};
+
 
 
 
