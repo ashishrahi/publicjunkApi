@@ -4,6 +4,7 @@ const { LOG_QUEUE } = require('../config/constant');
 let channel = null;
 
 const connectRabbitMQ = async () => {
+   
     try {
         const conn = await amqp.connect(process.env.RABBITMQ_URL);
         channel = await conn.createChannel();
