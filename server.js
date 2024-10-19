@@ -4,6 +4,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const { checkHealthStatus } = require('./services/healthService');
 const {connectRabbitMQ} = require('./config/rabbit.config');
+const uid  = require('tiny-uid');
 
 //--------------Imported components 
 const adminRoute = require('./routes/adminRoute/admin.route');
@@ -80,6 +81,10 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(limiter);
 app.use(helmet());
+app.use((req,res,next)=>{
+  req.logId = uid(7);
+  next()
+})
 
 //------------------------------- Routes  ----------------------------------------------
 app.use('/api/admin', adminRoute);

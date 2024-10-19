@@ -7,6 +7,12 @@ category:{
     ref: 'Category',
     required: true,
     },
+    price:{
+        type: Number,
+        required: true,
+        min: 0,
+ 
+    },
         
 subcategoryname:{
         type:String,

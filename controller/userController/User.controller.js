@@ -3,58 +3,63 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs');
 const redis = require('../../config/redis.config')
 const {redisOperations,redisClient} = require('../../utilities/redisHelper')
+const {hashPassword} = require('../../utilities/hashPassoword')
+const {emailValidator} = require('../../utilities/emailValidation')
+const {comparePasswords} = require('../../utilities/comparePassword')
+
 const REDIS_KEY = 'users';
 const REDIS_CACHE = 3600;
 
 
 //////////////////////////// signUp User ////////////////////////////////////////////////////
 
-    exports.signupUser = async(req,res)=>{
-    const {username, email, password, phone, house, city,country}= req.body;
-    console.log(req.body)
+exports.signupUser = async (req, res) => {
+    const { username, email, password, phone, house, city, country } = req.body;
+    console.log(req.body);
     try {
- // Password hashing   
-         
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(req.body.password, salt)
-          
-// User Created
-         
-        const alluser = new User({
-           ...req.body,password:hashedPassword
-        })
-        const result = await alluser.save()
-        res.status(201).json(result)}
-    
-        catch (error) {
-        res.status(500).json({error:error.message})
-        }}
+        // Password hashing
+        const hashedPassword = await hashPassword(password);
 
+        // User Created
+        const newUser = new User({
+            username,
+            email,
+            phone,
+            house,
+            city,
+            country,
+            password: hashedPassword,
+        });
+        const result = await newUser.save();
+        res.status(201).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 //////////////////////////////////  login User  //////////////////////////////////////////////////////////////////
 
 exports.loginUser = async(req,res)=>{
-    const {email, password,status}= req.body;
+    const {email, password}= req.body;
+    console.log(req.body)
     
     try {
-        if(status == 'true'){
-        const user = await User.findOne({email})
-        if(!user) return res.status(404).json({message:"User not found"})
         
-        const isMatch = bcrypt.compareSync(password,user.password)
+        const auser = await User.findOne({email})
+        if(!auser) return res.status(404).json({message:"User not found"})
+        
+        const isMatch = comparePasswords(password,auser.password)
         if(!isMatch) return res.status(401).json({message:"Invalid credentials"})
         
-            const tokenValue = jwt.sign({email:user.email},process.env.JWT_KEY,{expiresIn:'1h'});
-            user.token = tokenValue;
-            user.tokenExpiresAt = new Date(Date.now()+3600000) 
-            await user.save();
+            const tokenValue = jwt.sign({email:auser.email},process.env.JWT_KEY,{expiresIn:'1h'});
+            auser.token = tokenValue;
+            auser.tokenExpiresAt = new Date(Date.now()+3600000) 
+            await auser.save();
             res.status(200).json({user:{
-                username:user.username,
-                email:user.email,
-                token:user.token,
+                username:auser.username,
+                email:auser.email,
+                token:auser.token,
                 }})}
-                else{
-                    return res.status(403).json({message:"Access denied"})
-                }}
+                
     
     catch (error) {
         res.status(500).json({error:error.message})
