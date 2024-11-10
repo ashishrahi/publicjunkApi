@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {createfinanceDepart,getfinanceDepart}= require('../../controller/financeDepart.controller.js/financeDepart.controller')
+const {createfinanceDepart,getfinanceDepart} = require('../../controller/financeDepart.controller.js/financeDepart.controller')
     
 ////////////////////////// CreatefinanceDepart //////////////////////////////////////////// 
 

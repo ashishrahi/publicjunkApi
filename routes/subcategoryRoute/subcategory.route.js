@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {updateSubCategory,getSubCategoryById,createSubCategories,getSubCategories,updateSubCategoryStatus,activeSubCategoryStatus,inactiveSubCategoryStatus}= require('../../controller/subcategoryController/subcategory.controller')
+const {countSubcategories,updateSubCategory,getSubCategoryById,createSubCategories,getSubCategories,updateSubCategoryStatus,activeSubCategoryStatus,inactiveSubCategoryStatus}= require('../../controller/subcategoryController/subcategory.controller')
 const upload = require('../../middleware/multer.middleware') 
 
 //------------Create a new subcategory
@@ -8,6 +8,10 @@ router.post('/create',upload.single('image'),createSubCategories)
 
 //-------------get SubCategories
 router.get('/',getSubCategories)
+
+router.post('/count', countSubcategories)
+
+
 
 //-------------SubCategory Details
 router.get('/:id',getSubCategoryById)

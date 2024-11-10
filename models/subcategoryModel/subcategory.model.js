@@ -7,8 +7,8 @@ category:{
     ref: 'Category',
     required: true,
     },
-    price:{
-        type: Number,
+    priceWithUnit:{
+        type: String,
         required: true,
         min: 0,
  

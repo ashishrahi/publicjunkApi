@@ -24,7 +24,8 @@ const cityRoute = require('./routes/cityRoute/city.route');
 const pincodeRoute = require('./routes/pincodeRoute/pincode.route');
 const warehouseRoute = require('./routes/warehouseRoute/warehouse.route');
 const financeDepartRoute = require('./routes/financeDepartRoute/financeDepart.route');
-
+const contactusRoute = require('./routes/contactusRoute/contactus.route')
+const dashboardRoute = require('./routes/dashboardRoute/dashboard.route')
 // Kafka routes
 const { connectProducer: connectOrderProducer } = require('./services/producer/orderProducer');
 const { connectProducer: connectInventoryProducer } = require('./services/producer/inventoryProducer');
@@ -104,6 +105,8 @@ app.use('/api/drivers', driverRoute);
 app.use('/api/abouts', aboutRoute);
 app.use('/api/policies', policyRoute);
 app.use('/api/banners', bannerRoute);
+app.use('/api/contacts',contactusRoute)
+app.use('/api/dashboard', dashboardRoute);
 
 //---------------------------- Error Handling  ---------------------------------
 app.use((err, req, res, next) => {

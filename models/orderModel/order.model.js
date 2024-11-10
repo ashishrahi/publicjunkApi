@@ -1,5 +1,23 @@
 const mongoose = require('mongoose');
 
+// Subcategory
+const subcategorySchema = new mongoose.Schema({
+    subcategoryid: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Subcategory',
+        required: true,
+    },
+    priceWithUnit: {
+        type: Number,
+        required: true,
+    }
+});
+
+
+
+//orderschema
+
+
 const orderSchema = new mongoose.Schema({
     orderno:{
         type: String,
@@ -11,19 +29,7 @@ const orderSchema = new mongoose.Schema({
 
           },
     
-    category: {
-     type:mongoose.Schema.Types.ObjectId,
-     ref: 'Category',
-     default: null,
-
-    },
-
-subcategory: {
-     type:mongoose.Schema.Types.ObjectId,
-     ref: 'Subcategory',
-     default: null,
-
-    },
+subcategory: [subcategorySchema],
            
 
     driver:{
@@ -50,7 +56,6 @@ warehouse:{
     statusdriver:{
         type: String,
         enum: ['New','Pending','Working','Rejected','Cancelled','Picked','Delivered'],
-    
         default: 'New'
     }
   

@@ -24,6 +24,17 @@ const Subcategory = require("../../models/subcategoryModel/subcategory.model.js"
         }
      
 
+        // count subcategories
+exports.countSubcategories = async(req,res)=>{
+    try {
+        const subcategoryCount = await Subcategory.countDocuments();
+        res.status(200).json(subcategoryCount);
+           } 
+      catch (error) {
+        console.error("Error counting users:", error);
+        res.status(500).json({ error: "An error occurred while counting users" });
+       }
+}
 
          
 ////////////////////////////////// Read SubCategories  //////////////////////////////////////////////
@@ -69,6 +80,7 @@ exports.updateSubCategory = async (req, res) => {
             subcategoryname: subcategory.subcategoryname,
             image:subcategory.image,
             subcategordescription:subcategory.subcategorydescription,
+            priceWithUnit:subcategory.priceWithUnit,
             status: subcategory.status, 
             createdAt:subcategory.createdAt
 

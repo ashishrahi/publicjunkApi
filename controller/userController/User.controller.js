@@ -193,6 +193,7 @@ exports.countUsers = async (req, res) => {
     catch (error) {
       console.error("Error counting users:", error);
       res.status(500).json({ error: "An error occurred while counting users" });
-     }};
+     }
+    };
   
         

@@ -8,20 +8,28 @@ const addressSchema = new mongoose.Schema({
         required: true,
     },
     pincode: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Pincode',
+        type: String,
+        required: true,
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: 'Pincode',
     },
     city: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'City',
+        type: String,
+        required: true,
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: 'City',
     },
-    state: {  // Correcting the second "city" to "state"
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'State',
+    state: {  
+        type: String,
+        required: true,
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: 'State',
     },
     country: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Country',
+        type: String,
+        required: true,
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: 'Country',
     },
     status: {
         type: Boolean,
@@ -40,7 +48,7 @@ const driverSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        uppercase: true,
+        // uppercase: true,
     },
     email: {
         type: String,
@@ -59,21 +67,21 @@ const driverSchema = new mongoose.Schema({
     },
     
     // Accounts Details
-    aadhar: {
+    aadhaarno: {
         type: String,
         required: true,
     },
-    aadharimage: {
-        type: String,
-        required: true,
-    },
+     aadhaarimage: {
+         type: String,
+         required: true,
+     },
     warehouse: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,   
         ref: 'Warehouse',
     },
-    finance: {
+    financedepart: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Finance', // Capitalized the model name to follow convention
+        ref: 'FinanceDepart', // Capitalized the model name to follow convention
     },
       
     // Bank Details

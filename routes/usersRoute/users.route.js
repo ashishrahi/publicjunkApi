@@ -47,7 +47,7 @@ router.get('/status/false',inactiveUsers)
 router.post('/check_user',checkUser)
 
 // Count Users
-router.get('/count', countUsers)
+router.post('/count', countUsers)
 
 
 module.exports = router;

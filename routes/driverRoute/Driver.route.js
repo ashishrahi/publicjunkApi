@@ -8,7 +8,13 @@ const {registerDriver,getDrivers,getbyIdDriver,updateDriverStatus,updateDriverDe
     
 //---------Register
 
-router.post('/Driver',upload.single('file'),registerDriver)
+// router.post('/Driver',upload.single('avatar'),registerDriver)
+
+
+router.post('/driver', upload.fields([
+    { name: 'avatar', maxCount: 1 },        // Single avatar file
+    { name: 'aadhaarimage', maxCount: 1 }   // Single aadhaarimage file
+]), registerDriver);
 
 
 
