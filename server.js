@@ -6,7 +6,8 @@ const { checkHealthStatus } = require('./services/healthService');
 const {connectRabbitMQ} = require('./config/rabbit.config');
 const uid  = require('tiny-uid');
 
-//--------------Imported components 
+//--------------Imported components
+const sidebarRoute = require('./routes/sidebarRoute/sidebar.route')
 const adminRoute = require('./routes/adminRoute/admin.route');
 const usersRoute = require('./routes/usersRoute/users.route');
 const driverRoute = require('./routes/driverRoute/Driver.route');
@@ -88,7 +89,8 @@ app.use((req,res,next)=>{
 })
 
 //------------------------------- Routes  ----------------------------------------------
-app.use('/api/admin', adminRoute);
+app.use('/api/admin', adminRoute); 
+app.use('/api/sidebars',sidebarRoute);
 app.use('/api/countries', countryRoute);
 app.use('/api/states', stateRoute);
 app.use('/api/cities', cityRoute);

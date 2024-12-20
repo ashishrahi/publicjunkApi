@@ -21,7 +21,9 @@ const generateToken = require('../../middleware/jwtrouteauth.middleware')
            ...req.body,password:hashedPassword
         })
         const result = await newAdmin.save()
-        res.status(201).json(result)}
+        res.status(201).json({
+          message: 'Admin Created successfully',
+          data:result})}
     
         catch (error) {
         res.status(500).json({error:error.message})

@@ -1,40 +1,36 @@
 const Order = require('../../models/orderModel/order.model');
 const User = require('../../models/userModel/User.model')
-const Category = require('../../models/categoryModel/category.model')
+const Subcategory = require('../../models/subcategoryModel/subcategory.model')
 const Driver = require('../../models/driverModel/driver.model')
 const generateCode = require('../../utilities/GenerateCode')
+const Warehouse = require('../../models/warehouseModel/warehouse.modal')
 
 ///////////////////////////////Create a new order ///////////////////////////////////////////////////////////
 
 exports.createOrder = async (req, res) => {
-    const{user,category} = req.body;
-    console.log(req.body)
-    if(status == 'New' || status == 'Accepted' || status == null){
-    const generatecode = generateCode(8)
     try {
-        const newOrder = new Order({ ...req.body,orderno:generatecode});
-        const savedOrder = await newOrder.save();
+        const createorder = new Order(req.body); // Assumes the order data is in the request body
+        const savedOrder = await createorder.save();
         res.status(201).json(savedOrder);
-        } 
-    catch (error) {
-        res.status(500).json({ error: error.message });
-        }}
-    else{
-        return res.status(400).json({ message: 'Invalid order status' });
-    }};
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
 /////////////////////////////// Get all orders ///////////////////////////////////////////////////////////
 
 exports.getAllOrders = async (req, res) => {
     try { 
-        const data = await Order.find({}).populate('user').populate('category').populate('Driver')
+        const data = await Order.find({}).populate('user').populate('subcategory').populate('driver').populate('warehouse')
         const OrderDetails = data.map(
         order => ({
             _id: order._id,
             orderno: order.orderno,
             user: order.user.username,
-            category: order.category.categoryname,
-            Driver:order.Driver?order.Driver.name: 'Choose Drivers',
+            subcategory: order.subcategory.subcategoryname,
+            subcategoryCount: order.subcategory.length,
+            driver:order.driver.name?order.driver.name: 'Choose Drivers',
+            warehouse:order.warehouse.name,
             orderDate: order.orderdate,
             status: order.status,
             }))

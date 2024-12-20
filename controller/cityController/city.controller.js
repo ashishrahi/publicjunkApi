@@ -21,7 +21,10 @@ exports.createCity = async (req, res) => {
       state: stateId,
     });
     await newcity.save();
-    res.status(201).json(newcity);
+    res.status(201).json({
+      message: 'City has been created successfully',
+      data:newcity
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -33,7 +36,9 @@ exports.getCityById = async (req, res) => {
   try {
     const detailcity = await City.findById(req.params.id);
     if (!detailcity) return res.status(404).json({ message: "City not found" });
-    res.json(detailcity);
+    res.json({
+      message:'Details of City',
+      data : detailcity});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -54,7 +59,9 @@ exports.getCities = async (req, res) => {
 
          }));
         
-        res.json(formattedStates)
+        res.json({
+          message:'List of Cities',
+          data:formattedStates})
         }catch (error) {
             res.status(500).json({ message: error.message });
         }
@@ -69,7 +76,9 @@ exports.getstatusCity = async (req, res) => {
     if (!statusCity) return res.status(404).send("City not found");
     statusCity.status = !statusCity.status;
     await statusCity.save();
-    res.status(200).json(statusCity);
+    res.status(200).json({
+      message:'Status of City has been changed successfully',
+      data:statusCity});
   } catch (error) {
     res.status(500).json(error);
   }
@@ -79,22 +88,21 @@ exports.getstatusCity = async (req, res) => {
 
 exports.updateCity = async(req,res)=>{
     const { statename, countryname, cityname } = req.body;
-    console.log(req.body)
     try{
     // countryId
     const findCountry = await Country.findOne({countryname})
     const countryId = findCountry._id;
-    console.log(countryId)
 
     
     // stateId
     const findState = await State.findOne({statename})
     const stateId = findState._id;
-    console.log(stateId)
 
 
     const updatedcity = await City.findByIdAndUpdate(req.params.id, {$set:{country:countryId,state:stateId,cityname:cityname}}, { new: true })
-    res.json(updatedcity)
+    res.json({
+      message:'City updated successfully',
+      data:updatedcity})
     }catch (error) {
         res.status(500).json({ message: error.message });
     }

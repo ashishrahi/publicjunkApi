@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const User = require('../../models/userModel/User.model')
 
-const{countUsers,loginUser,signupUser,allUsers,profileUser,deletedUser,activeUsers,inactiveUsers,updateStatus,checkUser} =
+const{countUsers,loginUser,signupUser,allUsers,profileUser,deletedUser,activeUsers,inactiveUsers,updateStatus,checkUser,updateUser} =
 
 require('../../controller/userController/User.controller')
 
@@ -21,7 +21,7 @@ router.get('/:id',profileUser)
 router.get('/',allUsers)
 
 // //Update a User
-// router.put('/:id',updateUser)
+router.put('/:id',updateUser)
 
 //User Status
 

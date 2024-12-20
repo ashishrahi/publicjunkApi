@@ -7,6 +7,7 @@ const Pincode = require('../../models/pincodeModel/pincode.model')
 
 exports.createPincode = async (req, res) => {
   const { countryname, statename, cityname,pincode } = req.body;
+  console.log(req.body)
   try {
     // Country Id
     const findCountry = await Country.findOne({ countryname: countryname });
@@ -23,13 +24,14 @@ exports.createPincode = async (req, res) => {
     const newpincode= new Pincode({
       country: countryId,
       state: stateId,
-      cityname: cityId,
+      city: cityId,
       pincode:pincode
 
     });
-    console.log(newpincode);
-    await newpincode.save();
-    res.status(201).json(newpincode);
+    
+    const newPincode = await newpincode.save();
+    console.log(newPincode)
+    res.status(201).json(newPincode);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -51,12 +53,13 @@ exports.getPincodeById = async (req, res) => {
 
 exports.getPincodes = async (req, res) => {
     try{
-        const allpincode = await Pincode.find({}).populate('state').populate('country')
+        const allpincode = await Pincode.find({}).populate('city').populate('state').populate('country')
         const formattedPincodes = allpincode.map(pincode => ({
              _id: pincode._id,
              countryname: pincode.country?.countryname,
-             statename: pincode.state.statename,
-                cityname:pincode.cityname,
+             statename: pincode.state?.statename,
+             cityname:pincode.city.cityname,
+             pincode:pincode.pincode,
              status: pincode.status, 
              createAt:pincode.createdAt
 

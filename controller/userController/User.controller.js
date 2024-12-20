@@ -13,26 +13,39 @@ const REDIS_CACHE = 3600;
 
 //////////////////////////// signUp User ////////////////////////////////////////////////////
 
+/* The `exports.signupUser` function is responsible for handling the signup process for a new user.
+Here's a breakdown of what it does: */
 exports.signupUser = async (req, res) => {
-    const { username, email, password, phone, house, city, country } = req.body;
-    console.log(req.body);
-    try {
-        // Password hashing
-        const hashedPassword = await hashPassword(password);
-
-        // User Created
-        const newUser = new User({
-            username,
-            email,
-            phone,
-            house,
-            city,
-            country,
-            password: hashedPassword,
-        });
+    const { username,phone,pincode,email, password,city,country}= req.body;
+    
+    console.log(req.body)
+    //validation of username
+    if(!emailValidator(email)){
+        return res.status(400).json({ message: "Invalid email format" });
+    }
+    //username already exists
+    const user = await User.findOne({email: req.body.email})
+    if(user) return res.status(400).json({ message: "User already exists" });
+    
+    
+    
+    
+    try{
+        const newUser =  new User({...req.body});
         const result = await newUser.save();
-        res.status(201).json(result);
-    } catch (error) {
+         return res.status(201).json(result);
+       } 
+    catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+    
+    
+    try{
+        const newUser =  new User({...req.body});
+        const result = await newUser.save();
+         return res.status(201).json(result);
+       } 
+    catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
@@ -84,10 +97,10 @@ exports.allUsers = async (req, res) => {
         // Attempt to get data from Redis
         const resultFromRedis = await redisOperations.getData(REDIS_KEY);
 
-        if (resultFromRedis) {
-            // If data is found in Redis, return it
-            return res.json(resultFromRedis);
-        }
+        // if (resultFromRedis) {
+        //     // If data is found in Redis, return it
+        //     return res.json(resultFromRedis);
+        // }
 
         // If no data in Redis, fetch from the database
         const users = await User.find().select('-password').sort({ createdAt: -1 });
@@ -96,7 +109,7 @@ exports.allUsers = async (req, res) => {
         await redisOperations.setData(REDIS_KEY, users, REDIS_CACHE);
 
         // Return the users from the database
-        res.status(200).json(users);
+        return res.status(200).json(users);
     } catch (error) {
         // Handle any errors
         console.error('Error in allUsers controller:', error);
@@ -197,3 +210,14 @@ exports.countUsers = async (req, res) => {
     };
   
         
+////////////////////////////////  UpdateUser     ///////////////////////////////////////////////////////////////////
+
+exports.updateUser = async (req, res) => {
+    console.log(req.body)
+    
+    try {
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        res.status(200).json(updatedUser)
+    } catch (error) {
+        res.status(500).json(error)
+    }}

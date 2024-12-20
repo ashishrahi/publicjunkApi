@@ -1,8 +1,8 @@
 const {mongoose} = require('mongoose');
-
  const countrySchema = new mongoose.Schema({
   countryname:{
         type:String,
+
              },
              
     status:{

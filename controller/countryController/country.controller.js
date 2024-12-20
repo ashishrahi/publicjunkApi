@@ -6,29 +6,25 @@ const redis = require('../../config/redis.config')
 ////////////////////////////////// Create Country  //////////////////////////////////////////////
 exports.createCountry = async (req, res) => {
   const { countryname } = req.body;
-
   try {
     const existingCountry = await Country.findOne({ countryname });
     if (existingCountry) {
       return res.status(400).json({ message: "Country already exists in database" });
     }
-
     const newCountry = new Country({ countryname });
     await newCountry.save();
-
     // Invalidate cache when a new country is added
     redis.del('countries');
-
-    res.status(201).json(newCountry);
+    res.status(201).json({
+      message: 'Country added successfully!!',
+      data:newCountry
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-
-  
 ////////////////////////////////// List of countries  //////////////////////////////////////////////
-
 
 exports.listCountries = async (req, res) => {
   try {
@@ -63,7 +59,9 @@ exports.listCountries = async (req, res) => {
       });
 
       // Respond with data from MongoDB
-      res.status(200).json({ countryname: countryNames });
+      res.status(200).json({ 
+        message: 'Countries Fetched Successfully!',
+        data: countryNames });
     });
   } catch (error) {
     // Log the error if something goes wrong
@@ -97,7 +95,9 @@ exports.getByIdCountry = async (req, res) => {
       // Cache the fetched country
       redis.set(`country:${countryId}`, JSON.stringify(detailcountry), 'EX', 3600);
 
-      res.json(detailcountry);
+      res.json({
+        message:'Details Of Country',
+        data:detailcountry});
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -113,7 +113,9 @@ exports.getCountry = async (req, res) => {
     try {
   
       const countriesList = await Country.find({}).sort({ createdAt: -1 });
-      res.status(200).json(countriesList);
+      res.status(200).json({
+        message:'List of Countries',
+        data:countriesList});
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -127,7 +129,9 @@ exports.getCountry = async (req, res) => {
             console.log(req.body)
             try {
                 const updatedCountry = await Country.findByIdAndUpdate(req.params.id,{$set:{ countryname: countryname }}, { new: true });
-                res.json(updatedCountry);
+                res.json({
+                  message: 'Country Updated Successfully!',
+                  data:updatedCountry});
             } catch (error) {
                 res.status(404).json({ message: "Country not found" });
             }
@@ -141,7 +145,9 @@ exports.updateStatusCountry = async(req,res)=>{
       if(!statusCountry) return res.status(404).send('Country not found')
         statusCountry.status = !statusCountry.status
       await statusCountry.save()
-      res.status(200).json(statusCountry)
+      res.status(200).json({
+        message:'Status Of Country Updated Successfully',
+        data:statusCountry})
   } catch (error) {
       res.status(500).json(error)
   }}

@@ -84,7 +84,9 @@ exports.getDrivers = async(req,res)=>{
         
         
         
-        res.status(200).json(driverlist)
+        res.status(200).json({
+            message:'List Of Drivers',
+            data:driverlist})
         } 
     catch (error) {
         res.status(500).json(error)
@@ -101,7 +103,10 @@ exports.getDrivers = async(req,res)=>{
         try {
             const DriverbyId = await Driver.findById(req.params.id)
         if(!DriverbyId) return res.status(404).send('Driver not found')
-        res.status(200).json(DriverbyId)
+        res.status(200).json({
+            message:'Details Of Driver',
+            data:DriverbyId
+            })
         } catch (error) {
             res.status(500).json(error)
         }}
@@ -116,7 +121,9 @@ exports.getDrivers = async(req,res)=>{
                 if(!statusDriver) return res.status(404).send('Driver not found')
                     statusDriver.status = !statusDriver.status
                 await statusDriver.save()
-                res.status(200).json(statusDriver)
+                res.status(200).json({
+                    message:'Status Of Driver has been updated successfully',
+                    data:statusDriver})
             } catch (error) {
                 res.status(500).json(error)
             }}
@@ -129,7 +136,9 @@ exports.getDrivers = async(req,res)=>{
                 try {
                     const activeDriver = await Driver.find({status:true})
                     if(!activeDriver) return res.status(404).send('Driver not found')
-                    res.status(200).json(activeDriver)
+                    res.status(200).json({
+                        message:'List Of Active Drivers',
+                        data:activeDriver})
                 } catch (error) {
                     res.status(500).json(error)
                 }
@@ -142,7 +151,9 @@ exports.getDrivers = async(req,res)=>{
            exports.inactiveDriverStatus=async(req,res)=>{
             try {
                 const inactiveDriver = await Driver.find({status:false})
-                res.status(200).json(inactiveDriver)
+                res.status(200).json({
+                    message:'List of Inactive Drivers',
+                    data:inactiveDriver})
             } catch (error) {
                 res.status(500).json(error)
             }}
@@ -156,7 +167,9 @@ exports.getDrivers = async(req,res)=>{
               try {
                 const result = await cloudinary.uploader.upload(req.file.path);
                 const updatedDriver = await Driver.findByIdAndUpdate(req.params.id,{$set:{...updatedData,avatar:result.secure_url}})
-                res.status(200).json(updatedDriver)
+                res.status(200).json({
+                    message:'Details of Driver has been updated successfully',
+                    data:updatedDriver})
                  } 
               catch (error) {
                 res.status(500).json(error)
@@ -170,7 +183,9 @@ exports.getAssignedDriver = async (req, res) => {
     try {
         const assignedDriver = await Driver.findByIdAndUpdate(req.params.id, {$set:{assignedTo: req.body.assignedTo}}, {new: true})
         if(!assignedDriver) return res.status(404).send('Driver not found')
-        res.status(200).json(assignedDriver)
+        res.status(200).json({
+           message:'Driver has been assigned',
+            data:assignedDriver})
     } catch (error) {
         res.status(500).json(error)
     }

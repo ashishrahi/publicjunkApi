@@ -1,12 +1,9 @@
-//Generate UserCode
-function generateCode(length) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-  }
-  
-  module.exports = generateCode;
+// generateOrderId.js
+
+export function generateOrderId() {
+  const prefix = "ORD";
+  const randomNumber = Math.floor(10000 + Math.random() * 90000); // Generates a 5-digit number
+  return `${prefix}${randomNumber}`;
+}
+
+

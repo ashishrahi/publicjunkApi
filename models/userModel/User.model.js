@@ -2,15 +2,15 @@ const {mongoose} = require('mongoose');
 
 //--------- Address Schema
 
-const addressSchema = new mongoose.Schema({
-    house:{ 
-      type:String},
-    city: {
-      type:String},
-    country:{
-      type:String
-    },
-  });
+// const addressSchema = new mongoose.Schema({
+//     house:{ 
+//       type:String},
+//     city: {
+//       type:String},
+//     country:{
+//       type:String
+//     },
+//   });
 
 //----------- User Schema
 
@@ -24,33 +24,48 @@ email:{
         type:String,
       },
 
-password:{
-          type:String,
-         },
+// password:{
+//           type:String,
+
+//          },
 
 phone:{
        type:String,
       },
-
-address:{
-    type:[addressSchema],
+house:{ 
+         type:String
+      },
+pincode:{
+  type:String,
+      
+},
+city: {
+        type:String
+      },
+country:{
+        type:String
         },
 
-resetPasswordToken:{
-        type:String,
-      },
+
+// address:{
+//     type:[addressSchema],
+//         },
+
+// resetPasswordToken:{
+//         type:String,
+//       },
     
-resetPasswordExpires:{
-    type:Date,
-    },
+// resetPasswordExpires:{
+//     type:Date,
+//     },
 
-token:{
-    type:String,
-    },
+// token:{
+//     type:String,
+//     },
 
-tokenExpiresAt:{
-        type:Date,
-    },
+// tokenExpiresAt:{
+//         type:Date,
+//     },
 status:{
     type:Boolean,
     default:'true',
