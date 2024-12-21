@@ -18,18 +18,20 @@ Here's a breakdown of what it does: */
 exports.signupUser = async (req, res) => {
     const { username,phone,pincode,email, password,city,country}= req.body;
     
-    console.log(req.body)
-    //validation of username
-    if(!emailValidator(email)){
-        return res.status(400).json({ message: "Invalid email format" });
-    }
+    
     //username already exists
     const user = await User.findOne({email: req.body.email})
-    if(user) return res.status(400).json({ message: "User already exists" });
-    
-    
-    
-    
+    if(user) return res.status(400).json({ message: "User already exists" }); 
+    try{
+        const newUser =  new User({...req.body});
+        const result = await newUser.save();
+         return res.status(201).json({
+            message: 'User Created successfully',
+            data:result});
+       } 
+    catch (error) {
+        res.status(500).json({ error: error.message });
+    }
     try{
         const newUser =  new User({...req.body});
         const result = await newUser.save();
@@ -37,27 +39,15 @@ exports.signupUser = async (req, res) => {
        } 
     catch (error) {
         res.status(500).json({ error: error.message });
-    }
-    
-    
-    try{
-        const newUser =  new User({...req.body});
-        const result = await newUser.save();
-         return res.status(201).json(result);
-       } 
-    catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-//////////////////////////////////  login User  //////////////////////////////////////////////////////////////////
+    }};
+
+ //////////////////////////////////  login User  //////////////////////////////////////////////////////////////////
 
 exports.loginUser = async(req,res)=>{
     const {email, password}= req.body;
-    console.log(req.body)
     
     try {
-        
-        const auser = await User.findOne({email})
+         const auser = await User.findOne({email})
         if(!auser) return res.status(404).json({message:"User not found"})
         
         const isMatch = comparePasswords(password,auser.password)
@@ -67,7 +57,9 @@ exports.loginUser = async(req,res)=>{
             auser.token = tokenValue;
             auser.tokenExpiresAt = new Date(Date.now()+3600000) 
             await auser.save();
-            res.status(200).json({user:{
+            res.status(200).json({
+                message:'Login has been successfully !',
+                user:{
                 username:auser.username,
                 email:auser.email,
                 token:auser.token,
@@ -96,11 +88,11 @@ exports.allUsers = async (req, res) => {
 
         // Attempt to get data from Redis
         const resultFromRedis = await redisOperations.getData(REDIS_KEY);
-
-        // if (resultFromRedis) {
-        //     // If data is found in Redis, return it
-        //     return res.json(resultFromRedis);
-        // }
+        if (resultFromRedis) {
+            return res.json({
+                data: resultFromRedis
+            });
+        }
 
         // If no data in Redis, fetch from the database
         const users = await User.find().select('-password').sort({ createdAt: -1 });
@@ -109,11 +101,41 @@ exports.allUsers = async (req, res) => {
         await redisOperations.setData(REDIS_KEY, users, REDIS_CACHE);
 
         // Return the users from the database
-        return res.status(200).json(users);
+        return res.status(200).json({
+            message: 'List of Users!',
+            data: users
+        });
     } catch (error) {
         // Handle any errors
         console.error('Error in allUsers controller:', error);
         res.status(500).json({ error: 'An error occurred while fetching users.' });
+    }
+};
+
+exports.createUser = async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+
+        // Create the new user in the database
+        const newUser = new User({ name, email, password });
+        await newUser.save();
+
+        // Fetch the updated user list from the database
+        const users = await User.find().select('-password').sort({ createdAt: -1 });
+
+        // Update Redis cache with the new user list
+        await redisOperations.setData(REDIS_KEY, users, REDIS_CACHE);
+
+        // Return the newly created user along with the updated list
+        return res.status(201).json({
+            message: 'User created successfully!',
+            newUser,
+            data: users
+        });
+    } catch (error) {
+        // Handle any errors
+        console.error('Error in createUser controller:', error);
+        res.status(500).json({ error: 'An error occurred while creating the user.' });
     }
 };
 
@@ -141,7 +163,9 @@ exports.allUsers = async (req, res) => {
             await redisClient.setex(cacheKey, REDIS_CACHE, JSON.stringify(profile));
     
             // Send the response with the user profile
-            res.status(200).json(profile);
+            res.status(200).json({
+                message:'Details of User !',
+                data:profile});
         } catch (error) {
             res.status(500).json({ message: 'Server Error', error });
         }
@@ -162,7 +186,9 @@ exports.allUsers = async (req, res) => {
     exports.activeUsers=async(req,res)=>{
         try {
             const activeusers = await User.find({status:true})
-            res.status(200).json(activeusers)
+            res.status(200).json({
+                message:'List of Active Users',
+                data:activeusers})
         } catch (error) {
             res.status(500).json(error)
         }}
@@ -172,7 +198,9 @@ exports.allUsers = async (req, res) => {
         exports.inactiveUsers=async(req,res)=>{
             try {
                 const inactiveusers = await User.find({status:false})
-                res.status(200).json(inactiveusers)
+                res.status(200).json({
+                    message:'List of Inactive Users',
+                    data:inactiveusers})
             } catch (error) {
                 res.status(500).json(error)
             }}
@@ -183,7 +211,9 @@ exports.allUsers = async (req, res) => {
         const userStatus = await User.findByIdAndUpdate(req.params.id, {new: true})
         userStatus.status =!userStatus.status
         await userStatus.save()
-        res.status(200).json(userStatus)
+        res.status(200).json({
+            message:'Status has been updated successfully',
+            data:userStatus})
     } catch (error) {
         res.status(500).json(error)
     }}
@@ -201,7 +231,9 @@ exports.allUsers = async (req, res) => {
 exports.countUsers = async (req, res) => {
     try {
       const userCount = await User.countDocuments();
-      res.status(200).json(userCount);
+      res.status(200).json({
+        message:'User has been counted successfully', 
+        data:userCount});
          } 
     catch (error) {
       console.error("Error counting users:", error);
@@ -217,7 +249,9 @@ exports.updateUser = async (req, res) => {
     
     try {
         const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
-        res.status(200).json(updatedUser)
+        res.status(200).json({
+            message:'User has been updated successfully',
+            data:updatedUser})
     } catch (error) {
         res.status(500).json(error)
     }}

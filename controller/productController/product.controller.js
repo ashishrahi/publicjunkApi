@@ -65,7 +65,9 @@ exports.getProductById = async (req, res) => {
     try {
         const eachProduct = await Product.findById(req.params.id)
         if(!eachProduct) return res.status(404).send('Product not found')
-        res.status(200).json(eachProduct)
+        res.status(200).json({
+            message:'Product Details has been shown',
+            data:eachProduct})
         }
     catch (error) {
         res.status(500).json(error)
@@ -81,7 +83,9 @@ exports.updateProduct = async (req, res) => {
    try {
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {$set:{productname:productname,image:result.secure_url}}, {new: true})
         if(!updatedProduct) return res.status(404).send('Product not found')
-        res.status(200).json(updatedProduct)
+        res.status(200).json({
+            message:'Product updated successfully',
+            data:updatedProduct})
      } 
     catch (error) {
         res.status(500).json(error)
@@ -94,7 +98,9 @@ exports.updateProduct = async (req, res) => {
         exports.getProducts = async (req, res) => {
         try {
         const allCategories = await Product.find({}).sort({createdAt: -1})
-        res.status(200).json(allCategories);
+        res.status(200).json({
+            message:'List Of all Products',
+            data:allCategories});
          } 
         catch (error) {
         console.error('Error fetching categories:', error);
@@ -110,7 +116,9 @@ exports.updateProductStatus = async(req,res)=>{
         if(!statusProduct) return res.status(404).send('Product not found')
             statusProduct.status = !statusProduct.status
         await statusProduct.save()
-        res.status(200).json(statusProduct)
+        res.status(200).json({
+            message:'Product status updated successfully',
+            data:statusProduct})
     } catch (error) {
         res.status(500).json(error)
     }}
@@ -121,7 +129,9 @@ exports.activeProductStatus = async(req,res)=>{
     try {
         const activeProduct = await Product.find({status:true})
         if(!activeProduct) return res.status(404).send('Product not found')
-        res.status(200).json(activeProduct)
+        res.status(200).json({
+           message:'Product status is active',
+            data:activeProduct})
     } catch (error) {
         res.status(500).json(error)
     }
@@ -133,7 +143,9 @@ exports.inactiveProductStatus = async(req,res)=>{
     try {
         const inactiveCategories = await Product.find({status:false})
         if(!inactiveCategories) return res.status(404).send('Product not found')
-        res.status(200).json(inactiveCategories)
+        res.status(200).json({
+            message:'Product status is inactive',
+            data:inactiveCategories})
     } catch (error) {
         res.status(500).json(error)
     }

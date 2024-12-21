@@ -6,7 +6,9 @@ exports.registerVender = async(req,res)=>{
     try {
         const registerVender = await new Vender({...req.body})
         const savedVender = await registerVender.save()
-        res.status(200).send(savedVender)} 
+        res.status(200).send({
+            message:'List of Vender has been Created successfully!',
+            data:savedVender})} 
     catch (error) 
         {
         res.status(500).json(error)
@@ -19,7 +21,9 @@ exports.registerVender = async(req,res)=>{
 exports.getVenders = async(req,res)=>{
     try {
         const allVenders = await Vender.find({}).sort({createdAt: -1})
-        res.status(200).json(allVenders)
+        res.status(200).json({
+            message:'List of Venders',
+            data:allVenders})
         } 
     catch (error) {
         res.status(500).json(error)
@@ -33,7 +37,9 @@ exports.getVenders = async(req,res)=>{
                 if(!statusVender) return res.status(404).send('Vender not found')
                     statusVender.status = !statusVender.status
                 await statusVender.save()
-                res.status(200).json(statusVender)
+                res.status(200).json({
+                    message:'Status of Vender has been updated successfully',
+                    data:statusVender})
             } catch (error) {
                 res.status(500).json(error)
             }}
@@ -44,7 +50,9 @@ exports.getVenders = async(req,res)=>{
             //     try {
             //         const activeKarigar = await Karigar.find({status:true})
             //         if(!activeKarigar) return res.status(404).send('Karigar not found')
-            //         res.status(200).json(activeKarigar)
+            //         res.status(200).json({
+            //          message:'List of Active Venders', 
+            //          data:activeKarigar})
             //     } catch (error) {
             //         res.status(500).json(error)
             //     }
@@ -58,7 +66,9 @@ exports.getVenders = async(req,res)=>{
         //    exports.inactiveKarigarStatus=async(req,res)=>{
         //     try {
         //         const inactiveKarigar = await Karigar.find({status:false})
-        //         res.status(200).json(inactiveKarigar)
+        //         res.status(200).json({
+        //          message:'list of Inactive Venders',
+        //         data:inactiveKarigar})
         //     } catch (error) {
         //         res.status(500).json(error)
         //     }

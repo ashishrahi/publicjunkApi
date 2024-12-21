@@ -11,7 +11,9 @@ exports.createOrder = async (req, res) => {
     try {
         const createorder = new Order(req.body); // Assumes the order data is in the request body
         const savedOrder = await createorder.save();
-        res.status(201).json(savedOrder);
+        res.status(201).json({
+            message:'Order created successfully',
+            data:savedOrder});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -34,7 +36,9 @@ exports.getAllOrders = async (req, res) => {
             orderDate: order.orderdate,
             status: order.status,
             }))
-        res.status(200).json(OrderDetails);
+        res.status(200).json({
+            message:'List Of Orders',
+            data:OrderDetails});
         
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -49,7 +53,9 @@ exports.getOrderById = async (req, res) => {
         if (!orderId) {
             return res.status(404).json({ error: 'Order not found' });
         }
-        res.status(200).json(orderId);
+        res.status(200).json({
+            message:'Details Of Orders',
+            data:orderId});
         }
      catch (error) {
         res.status(500).json({ error: error.message });
@@ -67,7 +73,9 @@ exports.updateOrderStatus = async (req, res) => {
         const updateStatusOrder = await Order.findByIdAndUpdate(req.params.id,{$set:{status:status}},
          )
          if(!updateStatusOrder) return res.status(404).json({message: 'Order not found'})
-          res.status(200).json(updateStatusOrder)
+          res.status(200).json({
+        message:'Order status updated successfully',
+        data:updateStatusOrder})
         } 
     catch (error) {
         res.status(500).json({ error: error.message });
@@ -96,7 +104,9 @@ exports.deleteOrder = async (req, res) => {
 exports.countOrders = async(req,res)=>{
     try {
         const countOrderData = await Order.countDocuments({});
-        res.status(200).json(countOrderData);
+        res.status(200).json({
+            message:'Numbers Of Orders',
+            data:countOrderData});
         } 
     catch (error) {
         res.status(500).json({ message: error.message });
@@ -112,7 +122,9 @@ exports.countOrders = async(req,res)=>{
             if (!updatedOrder) {
                 return res.status(404).json({ error: 'Order not found' });
             }
-            res.status(200).json(updatedOrder);
+            res.status(200).json({
+                message:'Order has been updated successfully!',
+                data:updatedOrder});
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -123,24 +135,23 @@ exports.countOrders = async(req,res)=>{
 
     exports.assignOrder= async(req,res)=>{
         const{Drivername} = req.body
-        console.log(req.body)
-        console.log(req.params)
         const Driverdetails = await Driver.findOne({name:Drivername})
         const DriverId = Driverdetails._id
-        console.log(DriverId)
 
         try {
             const updatedOrder = await Order.findByIdAndUpdate(req.params.id, {$set:{Driver:DriverId}}, {new: true});
             if (!updatedOrder) {
                 return res.status(404).json({ error: 'Order not found' });
             }
-            res.status(200).json(updatedOrder);
+            res.status(200).json({
+                message: 'Order has beend assigned !',
+                data:updatedOrder});
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
     }
 
-/////////////////////////////// orderDriverUpdate ///////////////////////////////////////////////////////////
+/////////////////////////////// orderUpdate ///////////////////////////////////////////////////////////
 
 
     exports.orderDriverUpdate = async(req,res)=>{
@@ -149,7 +160,9 @@ exports.countOrders = async(req,res)=>{
         try{
         const DriverOrderUpdate = await Order.findByIdAndUpdate(req.params.id,{$set:{statusDriver:statusDriver}})
         if(!DriverOrderUpdate) return res.status(404).json({message: 'Order not found'})
-            res.status(200).json(DriverOrderUpdate)
+            res.status(200).json({
+                message: 'Order updated successfully',
+                data:DriverOrderUpdate})
            } 
         catch (error) {
             res.status(500).json({ error: error.message });

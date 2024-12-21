@@ -30,8 +30,9 @@ exports.createPincode = async (req, res) => {
     });
     
     const newPincode = await newpincode.save();
-    console.log(newPincode)
-    res.status(201).json(newPincode);
+    res.status(201).json({
+      message:'Pincode has been created successfully',
+      data:newPincode});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -43,7 +44,9 @@ exports.getPincodeById = async (req, res) => {
   try {
     const detailpincode = await Pincode.findById(req.params.id);
     if (!detailpincode) return res.status(404).json({ message: "Pincode not found" });
-    res.json(detailpincode);
+    res.json({
+      message: 'Details Of Pincode',
+      data:detailpincode});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -65,7 +68,9 @@ exports.getPincodes = async (req, res) => {
 
          }));
         
-        res.json(formattedPincodes)
+        res.json({
+          message:'List Of Pincodes',
+          data:formattedPincodes})
         }catch (error) {
             res.status(500).json({ message: error.message });
         }
@@ -80,7 +85,9 @@ exports.getstatusPincode = async (req, res) => {
     if (!statusPincode) return res.status(404).send("Pincode not found");
     statusPincode.status = !statusPincode.status;
     await statusPincode.save();
-    res.status(200).json(statusPincode);
+    res.status(200).json({
+      message:'Status Of Pincode has been updated successfully',
+      data:statusPincode});
   } catch (error) {
     res.status(500).json(error);
   }
@@ -90,25 +97,21 @@ exports.getstatusPincode = async (req, res) => {
 
 exports.updatePincode = async(req,res)=>{
     const { statename, countryname, cityname,pincode } = req.body;
-    console.log(req.body)
     try{
     // countryId
     const findCountry = await Country.findOne({countryname})
     const countryId = findCountry._id;
-    console.log(countryId)
-
-    
     // stateId
     const findState = await State.findOne({statename})
     const stateId = findState._id;
-    console.log(stateId)
-
     // cityId
 const findCity = await City.findOne({cityname})
 const cityId = findCity._id;
 
     const updatedpincode = await Pincode.findByIdAndUpdate(req.params.id, {$set:{country:countryId,state:stateId,cityname:cityId,pincode:pincode}}, { new: true })
-    res.json(updatedpincode)
+    res.json({
+      message:'Pincode updated successfully',
+      data:updatedpincode})
     }catch (error) {
         res.status(500).json({ message: error.message });
     }

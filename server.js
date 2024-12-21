@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const { checkHealthStatus } = require('./services/healthService');
 const {connectRabbitMQ} = require('./config/rabbit.config');
 const uid  = require('tiny-uid');
+const protect = require('./middleware/route.protect')
 
 //--------------Imported components
 const sidebarRoute = require('./routes/sidebarRoute/sidebar.route')
@@ -89,26 +90,27 @@ app.use((req,res,next)=>{
 })
 
 //------------------------------- Routes  ----------------------------------------------
-app.use('/api/admin', adminRoute); 
+// app.use(protect)
+app.use('/api/admin',adminRoute); 
 app.use('/api/sidebars',sidebarRoute);
-app.use('/api/countries', countryRoute);
-app.use('/api/states', stateRoute);
+app.use('/api/countries',countryRoute);
+app.use('/api/states',stateRoute);
 app.use('/api/cities', cityRoute);
-app.use('/api/pincodes', pincodeRoute);
-app.use('/api/users', usersRoute);
-app.use('/api/categories', categoryRoute);
-app.use('/api/subcategories', subcategoryRoute);
-app.use('/api/products', productRoute);  
-app.use('/api/orders', orderRoute);
-app.use('/api/venders', venderRoute);
-app.use('/api/warehouses', warehouseRoute);
-app.use('/api/financedeparts', financeDepartRoute);
-app.use('/api/drivers', driverRoute);
+app.use('/api/pincodes',pincodeRoute);
+app.use('/api/users',usersRoute);
+app.use('/api/categories',categoryRoute);
+app.use('/api/subcategories',subcategoryRoute);
+app.use('/api/products',productRoute);
+app.use('/api/orders',orderRoute);
+app.use('/api/venders',venderRoute);
+app.use('/api/warehouses',warehouseRoute);
+app.use('/api/financedeparts',financeDepartRoute);
+app.use('/api/drivers',protect, driverRoute);
 app.use('/api/abouts', aboutRoute);
 app.use('/api/policies', policyRoute);
-app.use('/api/banners', bannerRoute);
+app.use('/api/banners',bannerRoute);
 app.use('/api/contacts',contactusRoute)
-app.use('/api/dashboard', dashboardRoute);
+app.use('/api/dashboard',dashboardRoute);
 
 //---------------------------- Error Handling  ---------------------------------
 app.use((err, req, res, next) => {

@@ -28,7 +28,9 @@ exports.createWarehouse = async (req, res) => {
 
         // Save to the database
         await newWarehouse.save();
-        res.status(200).json(newWarehouse);
+        res.status(200).json({
+            message:'New warehouse created successfully',
+            data:newWarehouse});
     } catch (error) {
         console.error("Error saving warehouse:", error);
         res.status(500).json({ message: "Failed to create warehouse", error: error.message });
@@ -47,7 +49,9 @@ exports.createWarehouse = async (req, res) => {
 //     try {
 //         const eachcategory = await Category.findById(req.params.id)
 //         if(!eachcategory) return res.status(404).send('Category not found')
-//         res.status(200).json(eachcategory)
+//         res.status(200).json({
+//          message:'Details of Warehouse'
+//          data:eachcategory})
 //     } catch (error) {
 //         res.status(500).json(error)
 //     }
@@ -77,7 +81,9 @@ exports.createWarehouse = async (req, res) => {
         exports.getWarehouse = async (req, res) => {
         try {
         const allWarehouses = await Warehouse.find({}).sort({createdAt: -1})
-        res.status(200).json(allWarehouses);
+        res.status(200).json({
+            message:'List of allWarehouses',
+            data:allWarehouses});
          } 
         catch (error) {
         console.error('Error fetching warehouses:', error);
@@ -94,7 +100,9 @@ exports.createWarehouse = async (req, res) => {
 //         if(!statusCategory) return res.status(404).send('Category not found')
 //             statusCategory.status = !statusCategory.status
 //         await statusCategory.save()
-//         res.status(200).json(statusCategory)
+//         res.status(200).json({
+//         message:'Status of Warehouse updated successfully',
+//         data:statusCategory})
 //     } catch (error) {
 //         res.status(500).json(error)
 //     }}
@@ -106,7 +114,9 @@ exports.createWarehouse = async (req, res) => {
 //     try {
 //         const activeCategory = await Category.find({status:true})
 //         if(!activeCategory) return res.status(404).send('Category not found')
-//         res.status(200).json(activeCategory)
+//         res.status(200).json({
+//         message:'List of Active Warehouse',
+//         data:activeCategory})
 //     } catch (error) {
 //         res.status(500).json(error)
 //     }
@@ -119,7 +129,9 @@ exports.createWarehouse = async (req, res) => {
 //     try {
 //         const inactiveCategories = await Category.find({status:false})
 //         if(!inactiveCategories) return res.status(404).send('Category not found')
-//         res.status(200).json(inactiveCategories)
+//         res.status(200).json({
+//        message:'List of Inactive Warehouses',
+//        data:inactiveCategories})
 //     } catch (error) {
 //         res.status(500).json(error)
 //     }

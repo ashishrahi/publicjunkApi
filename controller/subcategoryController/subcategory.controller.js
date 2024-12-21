@@ -15,7 +15,9 @@ const Subcategory = require("../../models/subcategoryModel/subcategory.model.js"
             const result = await cloudinary.uploader.upload(req.file.path)
             const newsubCategory = new Subcategory({...req.body,image:result.secure_url,category:categoryname})
             await newsubCategory.save()
-            res.status(200).json(newsubCategory)
+            res.status(200).json({
+                message:'New Subcategory saved successfully',
+                data:newsubCategory})
             }
          catch (error) {
             res.status(500).json(error)
@@ -28,7 +30,9 @@ const Subcategory = require("../../models/subcategoryModel/subcategory.model.js"
 exports.countSubcategories = async(req,res)=>{
     try {
         const subcategoryCount = await Subcategory.countDocuments();
-        res.status(200).json(subcategoryCount);
+        res.status(200).json({
+            message: 'Subcategories has been counted successfully',
+            data:subcategoryCount});
            } 
       catch (error) {
         console.error("Error counting users:", error);
@@ -44,7 +48,9 @@ exports.getSubCategoryById = async (req, res) => {
     try {
         const eachSubcategory = await Subcategory.findById(req.params.id)
         if(!eachSubcategory) return res.status(404).send('Subcategory not found')
-        res.status(200).json(eachSubcategory)
+        res.status(200).json({
+            message:'Subcategory Details',
+            data:eachSubcategory})
     } catch (error) {
         res.status(500).json(error)
     }
@@ -60,7 +66,9 @@ exports.updateSubCategory = async (req, res) => {
    try {
         const updatedSubCategory = await Category.findByIdAndUpdate(req.params.id, {$set:{categoryname:subcategoryname,image:result.secure_url}}, {new: true})
         if(!updatedSubCategory) return res.status(404).send('SubCategory not found')
-        res.status(200).json(updatedSubCategory)
+        res.status(200).json({
+            message:'SubCategory updated successfully',
+            data:updatedSubCategory})
      } 
     catch (error) {
         res.status(500).json(error)
@@ -85,7 +93,9 @@ exports.updateSubCategory = async (req, res) => {
             createdAt:subcategory.createdAt
 
         }));
-        res.status(200).json(formattedsubcategory);
+        res.status(200).json({
+            message:'List Of Subcategories',
+            data:formattedsubcategory});
          } 
         catch (error) {
         console.error('Error fetching subcategories:', error);
@@ -102,7 +112,9 @@ exports.updateSubCategoryStatus = async(req,res)=>{
         if(!statusSubCategory) return res.status(404).send('SubCategory not found')
             statusSubCategory.status = !statusSubCategory.status
         await statusSubCategory.save()
-        res.status(200).json(statusSubCategory)
+        res.status(200).json({
+            message:'SubCategory status has been updated successfully',
+            data:statusSubCategory})
     } catch (error) {
         res.status(500).json(error)
     }}
@@ -114,7 +126,9 @@ exports.activeSubCategoryStatus = async(req,res)=>{
     try {
         const activeSubCategory = await SubCategoryCategory.find({status:true})
         if(!activeSubCategory) return res.status(404).send('SubCategory not found')
-        res.status(200).json(activeSubCategory)
+        res.status(200).json({
+            message: 'List of Active Sub Categories',
+            data:activeSubCategory})
     } catch (error) {
         res.status(500).json(error)
     }
@@ -127,7 +141,9 @@ exports.inactiveSubCategoryStatus = async(req,res)=>{
     try {
         const inactiveSubCategories = await SubCategory.find({status:false})
         if(!inactiveSubCategories) return res.status(404).send('SubCategory not found')
-        res.status(200).json(inactiveSubCategories)
+        res.status(200).json({
+            message:'List of Inactive Subcategory Status',
+            data:inactiveSubCategories})
     } catch (error) {
         res.status(500).json(error)
     }
