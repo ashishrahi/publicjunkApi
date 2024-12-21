@@ -3,8 +3,8 @@ const Policy = require('../../models/policyModel/policy.model')
 ////////////////////////////////// create Policy//////////////////////////////////////////////////////////////
 
 exports.createPolicy= async(req,res)=>{
-    const{title,description}= req.body;
 try {
+    const{title,description}= req.body;
     const createPolicy = new Policy({
         title:title,
         description:description,

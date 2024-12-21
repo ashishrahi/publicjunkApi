@@ -5,13 +5,11 @@ const Country = require('../../models/countryModel/country.model')
 
 /////////////////////////  Create a new State  ////////////////////////////////////////////
     exports.createState= async(req,res)=>{
-    
-    const { statename,countryname } = req.body;
-    try{
-   
-   // Country Validation
-    const findCountry = await Country.findOne({countryname: countryname})
-    console.log(findCountry)
+        try{
+            const { statename,countryname } = req.body;
+         // Country Validation
+        const findCountry = await Country.findOne({countryname: countryname})
+        console.log(findCountry)
         const countryId = findCountry._id;
         const newstate = new State({ statename, country:countryId });
         await newstate.save();
@@ -74,9 +72,9 @@ exports.getStateById = async(req,res)=>{
    ////////////////////////////  update of States  ////////////////////////////////////////////   
 
     exports.updateState = async(req,res)=>{
-        const { statename, countryname } = req.body;
         try{
-        const findCountry = await Country.findOne({countryname})
+            const { statename, countryname } = req.body;
+            const findCountry = await Country.findOne({countryname})
 
         const countryId = findCountry._id;
         const state = await State.findByIdAndUpdate(req.params.id, {$set:{country:countryId,statename:statename}}, { new: true })

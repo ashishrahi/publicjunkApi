@@ -77,10 +77,9 @@ exports.getProductById = async (req, res) => {
 ///////////////////////////// Update Product /////////////////////////////////////
 
 exports.updateProduct = async (req, res) => {
+    try {
     const{productname} = req.body
-    
-     const result = await cloudinary.uploader.upload(req.file.path)
-   try {
+         const result = await cloudinary.uploader.upload(req.file.path)
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {$set:{productname:productname,image:result.secure_url}}, {new: true})
         if(!updatedProduct) return res.status(404).send('Product not found')
         res.status(200).json({

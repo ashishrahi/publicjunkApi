@@ -6,9 +6,8 @@ const Pincode = require('../../models/pincodeModel/pincode.model')
 ////////////////////////////////// Create Pincode  //////////////////////////////////////////////
 
 exports.createPincode = async (req, res) => {
-  const { countryname, statename, cityname,pincode } = req.body;
-  console.log(req.body)
   try {
+  const { countryname, statename, cityname,pincode } = req.body;
     // Country Id
     const findCountry = await Country.findOne({ countryname: countryname });
     const countryId = findCountry._id;
@@ -79,7 +78,6 @@ exports.getPincodes = async (req, res) => {
 ////////////////////////////////// Status Pincodes  //////////////////////////////////////////////
 
 exports.getstatusPincode = async (req, res) => {
-    console.log(req.params.id)
   try {
     const statusPincode = await Pincode.findByIdAndUpdate(req.params.id);
     if (!statusPincode) return res.status(404).send("Pincode not found");
@@ -96,9 +94,10 @@ exports.getstatusPincode = async (req, res) => {
 ////////////////////////////////// Update Pincodes  //////////////////////////////////////////////
 
 exports.updatePincode = async(req,res)=>{
-    const { statename, countryname, cityname,pincode } = req.body;
     try{
-    // countryId
+      const { statename, countryname, cityname,pincode } = req.body;
+
+      // countryId
     const findCountry = await Country.findOne({countryname})
     const countryId = findCountry._id;
     // stateId

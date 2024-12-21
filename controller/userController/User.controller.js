@@ -16,13 +16,12 @@ const REDIS_CACHE = 3600;
 /* The `exports.signupUser` function is responsible for handling the signup process for a new user.
 Here's a breakdown of what it does: */
 exports.signupUser = async (req, res) => {
-    const { username,phone,pincode,email, password,city,country}= req.body;
-    
-    
+
+    try{
+   const { username,phone,pincode,email, password,city,country}= req.body;
     //username already exists
     const user = await User.findOne({email: req.body.email})
     if(user) return res.status(400).json({ message: "User already exists" }); 
-    try{
         const newUser =  new User({...req.body});
         const result = await newUser.save();
          return res.status(201).json({
@@ -44,10 +43,9 @@ exports.signupUser = async (req, res) => {
  //////////////////////////////////  login User  //////////////////////////////////////////////////////////////////
 
 exports.loginUser = async(req,res)=>{
-    const {email, password}= req.body;
-    
-    try {
-         const auser = await User.findOne({email})
+        try {
+            const {email, password}= req.body;
+            const auser = await User.findOne({email})
         if(!auser) return res.status(404).json({message:"User not found"})
         
         const isMatch = comparePasswords(password,auser.password)
@@ -64,15 +62,9 @@ exports.loginUser = async(req,res)=>{
                 email:auser.email,
                 token:auser.token,
                 }})}
-                
-    
-    catch (error) {
-        res.status(500).json({error:error.message})
-    }
-    
-}
-
-
+              catch (error) {
+             res.status(500).json({error:error.message})
+    }}
 
 ////////////////////////////////// All Users //////////////////////////////////////////////////
 
@@ -142,10 +134,9 @@ exports.createUser = async (req, res) => {
     /////////////     User_Details //////////////////
     
     exports.profileUser = async (req, res) => {
-        const userId = req.params.id;
-        const cacheKey = `${REDIS_KEY}:${userId}`;
-    
         try {
+        const userId = req.params.id;
+        const cacheKey = `${REDIS_KEY}:${userId}`;    
             // Check if the user data is available in Redis cache
             const cachedUser = await redisClient.get(cacheKey);
             if (cachedUser) {
@@ -175,7 +166,7 @@ exports.createUser = async (req, res) => {
   ///////////////////////////  Delete User  ////////////////////////////////////////////////
   exports.deletedUser=async(req,res)=>{
     try {
-        const user = await User.findByIdAndDelete(req.params.id)
+        const userDeleted = await User.findByIdAndDelete(req.params.id)
         res.status(200).json('User has been deleted')
     } catch (error) {
         res.status(500).json(error)
@@ -245,7 +236,6 @@ exports.countUsers = async (req, res) => {
 ////////////////////////////////  UpdateUser     ///////////////////////////////////////////////////////////////////
 
 exports.updateUser = async (req, res) => {
-    console.log(req.body)
     
     try {
         const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})

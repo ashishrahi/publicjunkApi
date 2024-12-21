@@ -7,11 +7,9 @@ const Subcategory = require("../../models/subcategoryModel/subcategory.model.js"
 
 
     exports.createSubCategories = async(req,res)=>{
+        try {
         const { categoryname } = req.body;
         console.log(req.body)
-       
-
-        try {
             const result = await cloudinary.uploader.upload(req.file.path)
             const newsubCategory = new Subcategory({...req.body,image:result.secure_url,category:categoryname})
             await newsubCategory.save()
@@ -60,10 +58,9 @@ exports.getSubCategoryById = async (req, res) => {
 
 
 exports.updateSubCategory = async (req, res) => {
+    try {
     const{subcategoryname} = req.body
-    
-     const result = await cloudinary.uploader.upload(req.file.path)
-   try {
+         const result = await cloudinary.uploader.upload(req.file.path)
         const updatedSubCategory = await Category.findByIdAndUpdate(req.params.id, {$set:{categoryname:subcategoryname,image:result.secure_url}}, {new: true})
         if(!updatedSubCategory) return res.status(404).send('SubCategory not found')
         res.status(200).json({

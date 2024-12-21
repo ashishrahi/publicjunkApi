@@ -5,7 +5,6 @@ const redis = require('../../config/redis.config')
 
 ////////////////////////////////// Create Country  //////////////////////////////////////////////
 exports.createCountry = async (req, res) => {
-  const { countryname } = req.body;
   try {
     const existingCountry = await Country.findOne({ countryname });
     if (existingCountry) {
@@ -125,9 +124,8 @@ exports.getCountry = async (req, res) => {
 
 
         exports.updateCountry= async(req,res)=>{
-            const { countryname } = req.body;
-            console.log(req.body)
             try {
+                const { countryname } = req.body;
                 const updatedCountry = await Country.findByIdAndUpdate(req.params.id,{$set:{ countryname: countryname }}, { new: true });
                 res.json({
                   message: 'Country Updated Successfully!',

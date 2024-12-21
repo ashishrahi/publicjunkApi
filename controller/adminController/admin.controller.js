@@ -7,8 +7,9 @@ const generateToken = require('../../middleware/jwtrouteauth.middleware')
 
 ////////////////////////////////// Register  ////////////////////////////////////////////// exports.signupUser = async(req,res)=>{
   exports.signupAdmin = async(req,res)=>{
-    const { username,email, password}= req.body;
     try {
+
+    const { username,email, password}= req.body;
         
         //-------------- Password hashing
          
@@ -36,9 +37,10 @@ const generateToken = require('../../middleware/jwtrouteauth.middleware')
 ////////////////////////////////// Login Admin //////////////////////////////////////////////
 
 exports.signinAdmin=async(req,res)=>{
+  try {
+
   const { email, password } = req.body;
 
-  try {
     // Find the admin by email
     const findAdmin = await Admin.findOne({ email });
     console.log(req.body)
@@ -82,15 +84,25 @@ exports.signinAdmin=async(req,res)=>{
 
 ////////////////////////////////// signout //////////////////////////////////////////////
 
-    exports.signoutAdmin = async(req,res)=>{
+exports.signoutAdmin = async (req, res) => {
+  try {
+    const token = req.headers['authorization'];
 
-
-      const token = req.headers['authorization'];
-      if (token) {
-          tokenStore.delete(token); // Remove token from store
-          res.status(200).send('Logged out successfully');
-      } else {
-          res.status(400).send('No token provided');
-      }
+    // Check if token is provided
+    if (!token) {
+      return res.status(400).send('No token provided');
     }
+
+    // Remove the token from the token store
+    tokenStore.delete(token); 
+
+    // Send success response
+    return res.status(200).send('Logged out successfully');
+  } catch (error) {
+    // Send error response in case of an exception
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+ 
      

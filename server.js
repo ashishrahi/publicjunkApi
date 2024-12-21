@@ -100,7 +100,7 @@ app.use('/api/pincodes',pincodeRoute);
 app.use('/api/users',usersRoute);
 app.use('/api/categories',categoryRoute);
 app.use('/api/subcategories',subcategoryRoute);
-app.use('/api/products',productRoute);
+app.use('/api/products',productRoute);  
 app.use('/api/orders',orderRoute);
 app.use('/api/venders',venderRoute);
 app.use('/api/warehouses',warehouseRoute);

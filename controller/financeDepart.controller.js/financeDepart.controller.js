@@ -3,7 +3,6 @@ const FinanceDepart = require('../../models/financeDepartModel/financeDepart.mod
 ////////////////////////// Create financeDepart //////////////////////////////////////////// 
 
 exports.createfinanceDepart = async (req, res) => {
-    console.log(req.body)
 try {
         const newfinanceDepart = new FinanceDepart({...req.body});
         await newfinanceDepart.save();

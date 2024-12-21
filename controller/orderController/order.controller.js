@@ -64,12 +64,11 @@ exports.getOrderById = async (req, res) => {
 /////////////////////////////// Update an order ///////////////////////////////////////////////////////////
 
 exports.updateOrderStatus = async (req, res) => {
-    
-    const {status} = req.body;
+    try {
+     const {status} = req.body;
     if (!['New', 'Accepted', 'Rejected',].includes(status)) {
         return res.status(400).json({ message: 'Invalid order status' });
          }
-    try {
         const updateStatusOrder = await Order.findByIdAndUpdate(req.params.id,{$set:{status:status}},
          )
          if(!updateStatusOrder) return res.status(404).json({message: 'Order not found'})
@@ -115,9 +114,9 @@ exports.countOrders = async(req,res)=>{
 /////////////////////////////// Update Order ///////////////////////////////////////////////////////////
 
     exports.UpdateOrder = async (req, res) => {
-        const{orderData} = req.body
-        console.log(req.body)
         try {
+            let{orderData} = req.body
+
             const updatedOrder = await Order.findByIdAndUpdate(req.params.id, req.body, {new: true});
             if (!updatedOrder) {
                 return res.status(404).json({ error: 'Order not found' });
@@ -134,11 +133,11 @@ exports.countOrders = async(req,res)=>{
 
 
     exports.assignOrder= async(req,res)=>{
-        const{Drivername} = req.body
+        try {
+     const{Drivername} = req.body
         const Driverdetails = await Driver.findOne({name:Drivername})
         const DriverId = Driverdetails._id
 
-        try {
             const updatedOrder = await Order.findByIdAndUpdate(req.params.id, {$set:{Driver:DriverId}}, {new: true});
             if (!updatedOrder) {
                 return res.status(404).json({ error: 'Order not found' });
@@ -155,9 +154,9 @@ exports.countOrders = async(req,res)=>{
 
 
     exports.orderDriverUpdate = async(req,res)=>{
-        const{statusDriver}= req.body;
-        console.log(req.body);
         try{
+        const{statusDriver}= req.body;
+
         const DriverOrderUpdate = await Order.findByIdAndUpdate(req.params.id,{$set:{statusDriver:statusDriver}})
         if(!DriverOrderUpdate) return res.status(404).json({message: 'Order not found'})
             res.status(200).json({

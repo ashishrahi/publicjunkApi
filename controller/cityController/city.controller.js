@@ -5,8 +5,9 @@ const City = require("../../models/cityModel/city.model");
 ////////////////////////////////// Create City  //////////////////////////////////////////////
 
 exports.createCity = async (req, res) => {
-  const { countryname, statename, cityname } = req.body;
   try {
+
+  const { countryname, statename, cityname } = req.body;
     // Country Id
     const findCountry = await Country.findOne({ countryname: countryname });
     const countryId = findCountry._id;
@@ -70,7 +71,6 @@ exports.getCities = async (req, res) => {
 ////////////////////////////////// Status Cities  //////////////////////////////////////////////
 
 exports.getstatusCity = async (req, res) => {
-    console.log(req.params.id)
   try {
     const statusCity = await City.findByIdAndUpdate(req.params.id);
     if (!statusCity) return res.status(404).send("City not found");
@@ -87,9 +87,8 @@ exports.getstatusCity = async (req, res) => {
 ////////////////////////////////// Update Cities  //////////////////////////////////////////////
 
 exports.updateCity = async(req,res)=>{
-    const { statename, countryname, cityname } = req.body;
     try{
-    // countryId
+      const { statename, countryname, cityname } = req.body;
     const findCountry = await Country.findOne({countryname})
     const countryId = findCountry._id;
 

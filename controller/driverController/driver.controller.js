@@ -163,8 +163,8 @@ exports.getDrivers = async(req,res)=>{
     
         exports.updateDriverDetails = async (req, res) => {
             
-            const updatedData = JSON.parse(req.body.values)
               try {
+                const updatedData = JSON.parse(req.body.values)
                 const result = await cloudinary.uploader.upload(req.file.path);
                 const updatedDriver = await Driver.findByIdAndUpdate(req.params.id,{$set:{...updatedData,avatar:result.secure_url}})
                 res.status(200).json({

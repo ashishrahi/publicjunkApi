@@ -5,7 +5,8 @@ const About = require('../../models/aboutModel/about.model')
 
 
     exports.createAbout=async(req,res)=>{
-    const {title,description}=req.body;
+        try {
+          const {title,description}=req.body;
     
       // Title Validation
       const findTitle = About.findOne({title:title})
@@ -16,7 +17,7 @@ const About = require('../../models/aboutModel/about.model')
       if(findDescription) return res.status(400).json({message: 'Description already exists'})
        if(!description) return res.status(400).json({message: 'Description is required'})
        
-        try {
+      
         const newAbout = new About({
             title:title,
             description:description,
@@ -63,9 +64,10 @@ exports.getbyIdAbout = async(req,res)=>{
 ////////////////////////////////// Update About //////////////////////////////////////////////
 
         exports.updateAbout = async(req,res)=>{
+            try {
             const {title, description} = req.body;
             console.log(req.body)
-            try {
+          
                 const updatedabout = await About.findByIdAndUpdate(req.params.id, {title:title, description:description}, {new: true})
                 if(!updatedabout) return res.status(404).json({message: 'About not found'})
                 res.status(200).json({
