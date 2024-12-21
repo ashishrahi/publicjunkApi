@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
-const { checkHealthStatus } = require('./services/healthService');
-const {connectRabbitMQ} = require('./config/rabbit.config');
+// const { checkHealthStatus } = require('./services/healthService');
+// const {connectRabbitMQ} = require('./config/rabbit.config');
 const uid  = require('tiny-uid');
 const protect = require('./middleware/route.protect')
 
@@ -66,14 +66,14 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-app.get('/healthCheck', checkHealthStatus);
+// app.get('/healthCheck', checkHealthStatus);
 
 // RabbitMQ connection
-connectRabbitMQ().then(() => {
-  console.log('Connected to RabbitMQ');
-}).catch(err => {
-  console.error('Error connecting to RabbitMQ:', err);
-});
+// connectRabbitMQ().then(() => {
+//   console.log('Connected to RabbitMQ');
+// }).catch(err => {
+//   console.error('Error connecting to RabbitMQ:', err);
+// });
 
 //------------------------ Middleware Utilities -----------------------------------
 app.use(express.urlencoded({ extended: true }));
